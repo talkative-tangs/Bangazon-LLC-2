@@ -14,8 +14,8 @@ Please consult the backlog of issues and work with your product owner to impleme
 
 ## To begin work
 
-1. Fork this repository into your team's Github organization.
-1. Alert your manager when this is complete and all backlog issues will be imported into your fork.
+1. The team lead should clone this repository, then push it to your team's Github repo.
+1. Alert your manager when this is complete and all backlog issues will be imported into your project.
 1. Each teammate should clone the repository.
 1. In the `djangazon` directory that gets created, run the migrations with `python manage.py migrate`
 
