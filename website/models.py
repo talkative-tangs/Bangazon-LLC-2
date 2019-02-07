@@ -36,7 +36,7 @@ class Product(SafeDeleteModel):
       quantity = models.IntegerField(blank=False)
       productType = models.ForeignKey(
         ProductType,
-        on_delete=models.CASCADE,
+        on_delete=models.CASCADE, null=True
       )
 
 class PaymentType(SafeDeleteModel):
