@@ -14,11 +14,22 @@ class Customer(models.Model):
       phoneNum = models.IntegerField(blank=False)
       deletedDate = models.DateField(default=None, blank=True, null=True)
 
+      def __str__(self):
+        '''string method that returns Customer's full name'''
+
+        full_name = (f"{self.user.first_name} {self.user.last_name}")
+        return full_name
+
 
 class ProductType(models.Model):
       '''Various Product Categories'''
       name =  models.TextField(blank=False)
       deletedDate = models.DateField(default=None, blank=True, null=True)
+
+      def __str__(self):
+            '''string method that returns the product type name'''
+
+            return self.name
 
 class Product(models.Model):
       '''An item that a User can Sell or Buy'''
@@ -37,6 +48,11 @@ class Product(models.Model):
       )
       deletedDate = models.DateField(default=None, blank=True, null=True)
 
+      def __str__(self):
+        '''string method that returns Product title'''
+
+        return self.seller.user.first_name + "'s " + self.title
+
 class PaymentType(models.Model):
       '''A payment type saved by the buyer for use with orders'''
 
@@ -47,6 +63,11 @@ class PaymentType(models.Model):
         on_delete=models.CASCADE
       )
       deletedDate = models.DateField(default=None, blank=True, null=True)
+
+      def __str__(self):
+            '''string method that returns the payment type name'''
+
+            return self.buyer.user.first_name + "'s " + self.name
 
 class Order(models.Model):
       '''An order placed by the buying/logged in user'''
@@ -62,6 +83,11 @@ class Order(models.Model):
       product = models.ManyToManyField(Product, through='ProductOrder')
       deletedDate = models.DateField(default=None, blank=True, null=True)
 
+      def __str__(self):
+        '''string method that returns the Order id'''
+
+        return str(self.id)
+
 class ProductOrder(models.Model):
       '''A join table linking the product being sold to the order being placed'''
       product = models.ForeignKey(
@@ -72,4 +98,8 @@ class ProductOrder(models.Model):
         Order,
         on_delete=models.CASCADE
       )
-      deletedDate = models.DateField(default=None, blank=True, null=True)
+
+      def __str__(self):
+        '''string method that returns the ProductOrder id'''
+
+        return str(self.id)
