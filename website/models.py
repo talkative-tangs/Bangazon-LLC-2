@@ -1,9 +1,6 @@
 from django.contrib.auth.models import User
 from django.db import models
-
-from safedelete.models import SafeDeleteModel
-from safedelete.models import SOFT_DELETE_CASCADE
-
+from datetime import datetime, date
 
 
 # Create your models here.
@@ -15,16 +12,16 @@ class Customer(models.Model):
       )
       address = models.CharField(max_length=100, blank=False)
       phoneNum = models.IntegerField(blank=False)
+      deletedDate = models.DateField(default=None, blank=True, null=True)
 
 
 class ProductType(models.Model):
       '''Various Product Categories'''
       name =  models.TextField(blank=False)
+      deletedDate = models.DateField(default=None, blank=True, null=True)
 
-
-class Product(SafeDeleteModel):
+class Product(models.Model):
       '''An item that a User can Sell or Buy'''
-      _safedelete_policy = SOFT_DELETE_CASCADE
 
       seller = models.ForeignKey(
           Customer,
@@ -38,10 +35,10 @@ class Product(SafeDeleteModel):
         ProductType,
         on_delete=models.CASCADE, null=True
       )
+      deletedDate = models.DateField(default=None, blank=True, null=True)
 
-class PaymentType(SafeDeleteModel):
+class PaymentType(models.Model):
       '''A payment type saved by the buyer for use with orders'''
-      _safedelete_policy = SOFT_DELETE_CASCADE
 
       name = models.CharField(max_length=50, blank=False)
       accountNum = models.IntegerField(blank=False)
@@ -49,10 +46,10 @@ class PaymentType(SafeDeleteModel):
         Customer,
         on_delete=models.CASCADE
       )
+      deletedDate = models.DateField(default=None, blank=True, null=True)
 
-class Order(SafeDeleteModel):
+class Order(models.Model):
       '''An order placed by the buying/logged in user'''
-      _safedelete_policy = SOFT_DELETE_CASCADE
 
       buyer = models.ForeignKey(
         Customer,
@@ -63,6 +60,7 @@ class Order(SafeDeleteModel):
         on_delete=models.PROTECT
       )
       product = models.ManyToManyField(Product, through='ProductOrder')
+      deletedDate = models.DateField(default=None, blank=True, null=True)
 
 class ProductOrder(models.Model):
       '''A join table linking the product being sold to the order being placed'''
@@ -74,3 +72,4 @@ class ProductOrder(models.Model):
         Order,
         on_delete=models.CASCADE
       )
+      deletedDate = models.DateField(default=None, blank=True, null=True)
