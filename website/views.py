@@ -1,12 +1,15 @@
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.shortcuts import render
 from django.template import RequestContext
+from website.forms import *
+from django.shortcuts import render, get_object_or_404, get_list_or_404
+from django.urls import reverse
+from website.models import *
 
-from website.forms import UserForm, ProductForm
-from website.models import Product
-from website.models import ProductType
+# Import this to use the direct db connection
+from django.db import connection
+
 
 def index(request):
     all_products = Product.objects.all()
@@ -121,9 +124,50 @@ def product_cat(request):
     template_name = 'product/product_cat.html'
     return render(request, template_name, {'categories': product_cats})
 
-def my_account(request):
+def my_account(request, user_id):
+    '''user account page'''
+
     template_name = 'my_account/my_account.html'
-    return render(request, template_name)
+    user = User.objects.get(id=user_id)
+   
+    return render(request, template_name, {'user': user})
+
+# def my_account(request):
+#     '''user account page'''
+
+#     template_name = 'my_account/my_account.html'
+    
+#     return render(request, context)
+
+def employees_detail(request, employee_id):
+    '''Shows details of clicked employee'''
+    employee = Employee.objects.get(id=employee_id)
+    programs = Join_Training_Employee.objects.filter(employee_id=employee_id)
+    context = { 'employee': employee, 'programs': programs }
+    return render(request, 'Website/employees_detail.html', context)
+
+@login_required
+def my_account_payment(request, user_id):
+    '''Add a new payment method for a particular user'''
+
+    template_name = 'my_account/my_account_payment.html'
+    if request.method != 'POST':
+        #No data submitted, create a blank form
+        form = PaymentForm()
+    # else:
+    #     #POST data submitted; process data
+    #     form = PaymentForm(data=request.POST)
+    #     if form.is_valid():
+    #         new_entry = form.save(commit=False)
+    #         new_entry.topic = topic
+    #         new_entry.save()
+    #         return HttpResponseRedirect(reverse('learning_logs:topic', args=[topic_id]))
+
+    context = {
+        'template_name': template_name,
+        'form': form
+        }
+    return render(request, context)
 
 
 

@@ -2,5 +2,15 @@
 
 {% load staticfiles %}
 {% block content %}
+    {% if user.is_authenticated %}
+    <h1>{{ user.first_name }}'s Account</h1>
+    {% else %}
     <h1>My Account</h1>
+    {% endif %}
+
+   
 {% endblock content %}
+
+ <!-- <button>
+        <a href="{% url 'website:my_account_payment' %}">Add New Payment Method</a>
+    </button> -->
