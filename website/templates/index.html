@@ -1,19 +1,18 @@
+{% extends 'base.html' %}
+
 {% load staticfiles %}
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Bangazon</title>
-  </head>
-  <body>
-    <h1>Welcome to Bangazon!</h1>
-    {% if user.is_authenticated %}
-    <h1>Bangazon says... hello {{ user.username }}!</h1>
-    <a href="{% url 'website:logout' %}">Logout</a>
-    {% else %}
-    <h1>Bangazon says...</h1>
-    <div><a href="{% url 'website:register' %}">Register</a></div>
-    <div><a href="{% url 'website:login' %}">Login</a></div>
+{% block content %}
+    <h1>Welcome to Bangazon{% if user.is_authenticated %}, {{ user.first_name }}!
+        {%else %}!
+    </h1>
     {% endif %}
-  </body>
-</html>
+
+    <h3>Latest Products</h3>
+
+    <ul style="list-style-type:none">
+    {% for product in products %}
+        <li>{{ product.title }}</li>
+    {% endfor %}
+    </ul>
+
+{% endblock content %}
