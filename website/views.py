@@ -6,10 +6,15 @@ from django.template import RequestContext
 
 from website.forms import UserForm, ProductForm
 from website.models import Product
+from website.models import ProductType
 
 def index(request):
+    all_products = Product.objects.all()
     template_name = 'index.html'
-    return render(request, template_name, {})
+    return render(request, template_name, {'products': all_products})
+    # previous index
+    # template_name = 'index.html'
+    # return render(request, template_name, {})
 
 
 # Create your views here.
@@ -91,10 +96,10 @@ def user_logout(request):
     return HttpResponseRedirect('/')
 
 
-def sell_product(request):
+def product_sell(request):
     if request.method == 'GET':
         product_form = ProductForm()
-        template_name = 'product/create.html'
+        template_name = 'product/product_sell.html'
         return render(request, template_name, {'product_form': product_form})
 
     elif request.method == 'POST':
@@ -111,10 +116,14 @@ def sell_product(request):
         template_name = 'product/success.html'
         return render(request, template_name, {})
 
-def list_products(request):
-    all_products = Product.objects.all()
-    template_name = 'product/list.html'
-    return render(request, template_name, {'products': all_products})
+def product_cat(request):
+    product_cats = ProductType.objects.all()
+    template_name = 'product/product_cat.html'
+    return render(request, template_name, {'categories': product_cats})
+
+def my_account(request):
+    template_name = 'my_account/my_account.html'
+    return render(request, template_name)
 
 
 
