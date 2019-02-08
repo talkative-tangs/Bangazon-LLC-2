@@ -1,12 +1,14 @@
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.shortcuts import render
 from django.template import RequestContext
+from website.forms import *
+from django.shortcuts import render, get_object_or_404, get_list_or_404
+from django.urls import reverse
+from website.models import *
 
-from website.forms import UserForm, ProductForm
-from website.models import Product
-from website.models import ProductType
+# Import this to use the direct db connection
+from django.db import connection
 
 def index(request):
     all_products = Product.objects.all()
