@@ -3,5 +3,22 @@
 {% load staticfiles %}
 {% block content %}
     <h1>Product Categories</h1>
-
+    {% if categories %}
+    <ul style="list-style-type:none">
+      {% for category in categories %}
+          <li>{{ category.name }}</li>
+          {% if products %}
+          <ul style="list-style-type:none">
+            {% for product in products%}
+            {% if product.productType_id == category.id%}
+            <li>{{ product.title }}</li>
+            {% endif %}
+            {% endfor %}
+          </ul>
+          {% endif %}
+      {% endfor %}
+      </ul>
+    {% else %}
+    <p>no product categories</p>
+    {% endif %}
 {% endblock content %}

@@ -1,12 +1,15 @@
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
 from django.http import HttpResponse, HttpResponseRedirect, Http404
-from django.shortcuts import render
 from django.template import RequestContext
+from website.forms import *
+from django.shortcuts import render, get_object_or_404, get_list_or_404
+from django.urls import reverse
+from website.models import *
 
-from website.forms import UserForm, ProductForm
-from website.models import Product
-from website.models import ProductType
+# Import this to use the direct db connection
+from django.db import connection
+
 
 def index(request):
     all_products = Product.objects.all()
@@ -117,9 +120,17 @@ def product_sell(request):
         return render(request, template_name, {})
 
 def product_cat(request):
-    product_cats = ProductType.objects.all()
-    template_name = 'product/product_cat.html'
-    return render(request, template_name, {'categories': product_cats})
+    # product_cats = ProductType.objects.all()
+  try:
+    # By default, Django figures out a database table name by joining the model’s “app label” – the name you used in manage.py startapp – to the model’s class name, with an underscore between them.
+    categories = ProductType.objects.raw('SELECT * FROM website_producttype')
+    products = Product.objects.raw('SELECT * FROM website_product')
+  except ProductType.DoesNotExist:
+    raise Http404("Categories do not exist")
+
+  context = {'categories': categories, 'products': products}
+  template_name = 'product/product_cat.html'
+  return render(request, template_name, context)
 
 def my_account(request):
     template_name = 'my_account/my_account.html'
