@@ -10,8 +10,6 @@ class UserForm(forms.ModelForm):
         fields = ('username', 'email', 'password', 'first_name', 'last_name',)
 
 class ProductForm(forms.ModelForm):
-    # producttypenames = ProductType.objects.raw("SELECT pt.name FROM website_producttype as pt")
-    # product_type = forms.ChoiceField(choices=[(x, x) for x in producttypenames])
 
     class Meta:
         model = Product

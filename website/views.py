@@ -1,5 +1,6 @@
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ValidationError
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template import RequestContext
 from website.forms import *
@@ -105,12 +106,10 @@ def product_sell(request):
         return render(request, template_name, {'product_form': product_form})
 
     elif request.method == 'POST':
-        if not request.user.is_authenticated:
-            print("No user")
+        form_data = request.POST
+        product_form = ProductForm(form_data)
 
-        else:
-            form_data = request.POST
-            print(request.user)
+        if product_form.is_valid():
             seller = request.user.customer.id
             title = form_data['title']
             description = form_data['description']
@@ -133,6 +132,9 @@ def product_sell(request):
 
             template_name = 'product/success.html'
             return render(request, template_name, {})
+
+        else:
+            raise ValidationError(_('Invalid value: %s'))
 
 def product_cat(request):
     product_cats = ProductType.objects.all()
