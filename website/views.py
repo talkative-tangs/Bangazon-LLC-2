@@ -76,6 +76,7 @@ def login_user(request):
 
     # Obtain the context for the user's request.
     context = RequestContext(request)
+    next_route = {'next': request.GET['next']}
 
     # If the request is a HTTP POST, try to pull out the relevant information.
     if request.method == 'POST':
@@ -88,7 +89,7 @@ def login_user(request):
         # If authentication was successful, log the user in
         if authenticated_user is not None:
             login(request=request, user=authenticated_user)
-            return HttpResponseRedirect('/')
+            return HttpResponseRedirect(request.GET.get('next'))
 
         else:
             # Bad login details were provided. So we can't log the user in.
@@ -96,7 +97,7 @@ def login_user(request):
             return HttpResponse("Invalid login details supplied.")
 
 
-    return render(request, 'login.html', {}, context)
+    return render(request, 'login.html', next_route, context)
 
 # Use the login_required() decorator to ensure only those logged in can access the view.
 @login_required
@@ -108,7 +109,7 @@ def user_logout(request):
     # in the URL in redirects?????
     return HttpResponseRedirect('/')
 
-
+@login_required
 def product_sell(request):
     if request.method == 'GET':
         product_form = ProductForm()
