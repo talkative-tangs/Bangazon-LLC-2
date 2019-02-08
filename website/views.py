@@ -132,42 +132,36 @@ def my_account(request, user_id):
    
     return render(request, template_name, {'user': user})
 
-# def my_account(request):
-#     '''user account page'''
-
-#     template_name = 'my_account/my_account.html'
-    
-#     return render(request, context)
-
-def employees_detail(request, employee_id):
-    '''Shows details of clicked employee'''
-    employee = Employee.objects.get(id=employee_id)
-    programs = Join_Training_Employee.objects.filter(employee_id=employee_id)
-    context = { 'employee': employee, 'programs': programs }
-    return render(request, 'Website/employees_detail.html', context)
-
 @login_required
 def my_account_payment(request, user_id):
     '''Add a new payment method for a particular user'''
 
+    print('user id', user_id)
     template_name = 'my_account/my_account_payment.html'
+    user = User.objects.get(id=user_id)
+    print('user', user.id)
     if request.method != 'POST':
         #No data submitted, create a blank form
         form = PaymentForm()
-    # else:
-    #     #POST data submitted; process data
-    #     form = PaymentForm(data=request.POST)
-    #     if form.is_valid():
-    #         new_entry = form.save(commit=False)
-    #         new_entry.topic = topic
-    #         new_entry.save()
-    #         return HttpResponseRedirect(reverse('learning_logs:topic', args=[topic_id]))
+    else:
+        #POST data submitted; process data
+        form = PaymentForm(data=request.POST)
+        # if form.is_valid():
+        name = request.POST['name']
+        accountNum = request.POST['accountNum']
+        # buyer = request.POST['buyer_id']
+        # print('buyer id', buyer_id)
+        new_payment = PaymentType(
+            name=name,
+            accountNum=accountNum,
+            buyer_id=user.id
+        )
+        new_payment.save()
 
-    context = {
-        'template_name': template_name,
-        'form': form
-        }
-    return render(request, context)
+        return HttpResponseRedirect(reverse('website:my_account'))
+    
+    
+    return render(request, template_name, {'user': user, 'form':form.as_p()})
 
 
 

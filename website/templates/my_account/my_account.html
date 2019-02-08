@@ -8,9 +8,9 @@
     <h1>My Account</h1>
     {% endif %}
 
-   
+    <button>
+        <a href="{% url 'website:my_account_payment' user.id %}">Add New Payment Method</a>
+    </button>
 {% endblock content %}
 
- <!-- <button>
-        <a href="{% url 'website:my_account_payment' %}">Add New Payment Method</a>
-    </button> -->
+ 

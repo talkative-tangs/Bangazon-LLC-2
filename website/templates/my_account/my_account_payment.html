@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 
 {% block content %}
-<!-- <p>Add Payment Method:</p>
+    <p>Add Payment Method:</p>
 
-<form action="{% url 'website:my_account_payment' user.id %}" method='POST'>
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button name='submit'>Add Payment Method</button>
-</form> -->
+    <form action="{% url 'website:my_account_payment' user.id %}" method='POST'>
+        {% csrf_token %}
+        {{ form }}
+        <button name='submit'>Add Payment Method</button>
+    </form>
 {% endblock content %}
