@@ -97,7 +97,7 @@ def user_logout(request):
     # in the URL in redirects?????
     return HttpResponseRedirect('/')
 
-
+@login_required
 def product_sell(request):
     if request.method == 'GET':
         product_form = ProductForm()
@@ -105,18 +105,34 @@ def product_sell(request):
         return render(request, template_name, {'product_form': product_form})
 
     elif request.method == 'POST':
-        form_data = request.POST
+        if not request.user.is_authenticated:
+            print("No user")
 
-        p = Product(
-            seller = request.user,
-            title = form_data['title'],
-            description = form_data['description'],
-            price = form_data['price'],
-            quantity = form_data['quantity'],
-        )
-        p.save()
-        template_name = 'product/success.html'
-        return render(request, template_name, {})
+        else:
+            form_data = request.POST
+            print(request.user)
+            seller = request.user.customer.id
+            title = form_data['title']
+            description = form_data['description']
+            price = form_data['price']
+            quantity = form_data['quantity']
+            productType = form_data['productType']
+
+            data = [seller, title, description, price, quantity, productType]
+            print(data)
+
+            with connection.cursor() as cursor:
+                cursor.execute(f'''INSERT into website_product(
+                    seller_id,
+                    title,
+                    description,
+                    price,
+                    quantity,
+                    productType_id
+                ) VALUES(%s, %s, %s, %s, %s, %s)''', data)
+
+            template_name = 'product/success.html'
+            return render(request, template_name, {})
 
 def product_cat(request):
     product_cats = ProductType.objects.all()
