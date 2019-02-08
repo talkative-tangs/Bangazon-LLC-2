@@ -10,14 +10,24 @@ from website.models import *
 # Import this to use the direct db connection
 from django.db import connection
 
-
-def index(request):
-    all_products = Product.objects.all()
-    template_name = 'index.html'
-    return render(request, template_name, {'products': all_products})
+#ORM WAY
+# def index(request):
+#     all_products = Product.objects.all()
+#     template_name = 'index.html'
+#     return render(request, template_name, {'products': all_products})
     # previous index
     # template_name = 'index.html'
     # return render(request, template_name, {})
+
+def index(request):
+    try:
+        recent_products = Product.objects.raw('SELECT id, title FROM website_product ORDER BY id DESC LIMIT 20;')
+    except Product.DoesNotExist:
+        raise Http404("Products do not exist")
+
+    template_name = 'index.html'
+    return render(request, template_name, {'recent_products': recent_products})
+
 
 
 # Create your views here.
@@ -131,6 +141,22 @@ def product_cat(request):
   context = {'categories': categories, 'products': products}
   template_name = 'product/product_cat.html'
   return render(request, template_name, context)
+
+#ORM WAY
+# def product_detail(request, product_id):
+#     product = Product.objects.get(id=product_id)
+#     template_name = 'product/product_detail.html'
+#     return render(request, template_name, {'product': product})
+
+def product_detail(request, product_id):
+    try:
+        sql = '''SELECT id, seller_id FROM website_product WHERE id = %s'''
+        product = Product.objects.raw(sql, [product_id])[0]
+    except Product.DoesNotExist:
+        raise Http404("Product does not exist")
+
+    template_name = 'product/product_detail.html'
+    return render(request, template_name, {'product': product})
 
 def my_account(request):
     template_name = 'my_account/my_account.html'

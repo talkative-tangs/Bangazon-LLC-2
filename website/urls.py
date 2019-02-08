@@ -10,6 +10,7 @@ urlpatterns = [
     path('register/', views.register, name='register'),
     path('product_sell/', views.product_sell, name='product_sell'),
     path('product_cat/', views.product_cat, name='product_cat'),
+    path('product_detail/<int:product_id>/', views.product_detail, name='product_detail'),
     # my_account needs <int:user_id>/ added to path upon template setup
     path('my_account/', views.my_account, name='my_account')
 
