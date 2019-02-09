@@ -4,6 +4,15 @@
 {% block content %}
     {% if user.is_authenticated %}
     <h1>{{ user.first_name }}'s Account</h1>
+        <ul>
+            <li>Address: {{ customer.user.address }}</li>
+            <li>Phone Number: {{ user.customer.address }}</li>
+        </ul>
+
+        <h3>Payment Methods:</h3>
+            <ul>
+                <li></li>
+            </ul>
     {% else %}
     <h1>My Account</h1>
     {% endif %}

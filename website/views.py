@@ -11,19 +11,29 @@ from website.models import *
 from django.db import connection
 
 
-def index(request):
-    all_products = Product.objects.all()
-    template_name = 'index.html'
-    return render(request, template_name, {'products': all_products})
+#ORM WAY
+# def index(request):
+#     all_products = Product.objects.all()
+#     template_name = 'index.html'
+#     return render(request, template_name, {'products': all_products})
     # previous index
     # template_name = 'index.html'
     # return render(request, template_name, {})
+
+def index(request):
+    try:
+        recent_products = Product.objects.raw('SELECT id, title FROM website_product ORDER BY id DESC LIMIT 20;')
+    except Product.DoesNotExist:
+        raise Http404("Products do not exist")
+            
+    template_name = 'index.html'
+    return render(request, template_name, {'recent_products': recent_products})
+
 
 
 # Create your views here.
 def register(request):
     '''Handles the creation of a new user for authentication
-
     Method arguments:
       request -- The full HTTP request object
     '''
@@ -59,7 +69,6 @@ def register(request):
 
 def login_user(request):
     '''Handles the creation of a new user for authentication
-
     Method arguments:
       request -- The full HTTP request object
     '''
@@ -124,6 +133,22 @@ def product_cat(request):
     template_name = 'product/product_cat.html'
     return render(request, template_name, {'categories': product_cats})
 
+#ORM WAY
+# def product_detail(request, product_id):
+#     product = Product.objects.get(id=product_id)
+#     template_name = 'product/product_detail.html'
+#     return render(request, template_name, {'product': product})
+
+def product_detail(request, product_id):
+    try:
+        sql = '''SELECT id, seller_id FROM website_product WHERE id = %s'''
+        product = Product.objects.raw(sql, [product_id])[0]
+    except Product.DoesNotExist:
+        raise Http404("Product does not exist")
+            
+    template_name = 'product/product_detail.html'
+    return render(request, template_name, {'product': product})
+
 def my_account(request, user_id):
     '''user account page'''
 
@@ -134,31 +159,55 @@ def my_account(request, user_id):
 
 @login_required
 def my_account_payment(request, user_id):
-    '''Add a new payment method for a particular user'''
-
-    print('user id', user_id)
+    '''add payment type for user'''
     template_name = 'my_account/my_account_payment.html'
     user = User.objects.get(id=user_id)
-    print('user', user.id)
-    if request.method != 'POST':
-        #No data submitted, create a blank form
-        form = PaymentForm()
-    else:
-        #POST data submitted; process data
-        form = PaymentForm(data=request.POST)
-        # if form.is_valid():
-        name = request.POST['name']
-        accountNum = request.POST['accountNum']
-        # buyer = request.POST['buyer_id']
-        # print('buyer id', buyer_id)
-        new_payment = PaymentType(
-            name=name,
-            accountNum=accountNum,
-            buyer_id=user.id
-        )
-        new_payment.save()
 
-        return HttpResponseRedirect(reverse('website:my_account'))
+    if request.method == "GET":
+            #No data submitted, create a blank form
+            form = PaymentForm()
+
+    if request.method == "POST":
+        req = request.POST
+        with connection.cursor() as cursor:
+            payment_type_check = PaymentType.objects.raw("SELECT * FROM website_paymenttype WHERE name=%s AND accountNum=%s", [req["name"], req["accountNum"]])
+            if payment_type_check:
+                error = True
+                return render(request, template_name, {'error':error})
+                # "A payment type with that name already exists"
+            new_payment_type = cursor.execute("INSERT INTO website_paymenttype VALUES (%s, %s, %s, %s, %s)", [None, req["name"], req["accountNum"], None, user_id])
+
+        return HttpResponseRedirect(reverse('website:my_account', args=(user_id,)))
+
+# ------------------------------------
+# ORM WAY
+# ------------------------------------
+# @login_required
+# def my_account_payment(request, user_id):
+#     '''Add a new payment method for a particular user'''
+
+#     print('user id', user_id)
+#     template_name = 'my_account/my_account_payment.html'
+#     user = User.objects.get(id=user_id)
+#     print('user', user.id)
+
+#     if request.method != 'POST':
+#         #No data submitted, create a blank form
+#         form = PaymentForm()
+#     else:
+#         #POST data submitted; process data
+#         form = PaymentForm(data=request.POST)
+#         # if form.is_valid():
+#         name = request.POST['name']
+#         accountNum = request.POST['accountNum']
+#         new_payment = PaymentType(
+#             name=name,
+#             accountNum=accountNum,
+#             buyer_id=user.id
+#         )
+#         new_payment.save()
+
+#         return HttpResponseRedirect(reverse('website:my_account', args=(user_id,)))
     
     
     return render(request, template_name, {'user': user, 'form':form.as_p()})
