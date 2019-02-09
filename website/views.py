@@ -140,12 +140,12 @@ def product_sell(request):
                     quantity,
                     productType_id
                 ) VALUES(%s, %s, %s, %s, %s, %s)''', data)
-
-            template_name = 'product/success.html'
-            return render(request, template_name, {})
-
+                product_id = cursor.lastrowid
+                #
+                return HttpResponseRedirect(reverse('website:product_detail', args=(product_id,)))
         else:
             raise ValidationError(_('Invalid value: %s'))
+
 
 def product_cat(request):
     product_cats = ProductType.objects.all()
