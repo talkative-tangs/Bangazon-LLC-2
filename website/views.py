@@ -154,8 +154,18 @@ def my_account(request, user_id):
 
     template_name = 'my_account/my_account.html'
     user = User.objects.get(id=user_id)
+    sql = '''SELECT id, name, substr(accountNum, -4, 4) as four
+            FROM website_paymenttype 
+             WHERE buyer_id = %s'''
+    payments = PaymentType.objects.raw(sql, [user_id])
+    context = {
+        'user': user,
+        'payments': payments,
+    }
+    print('user', user_id)
+    print('payments', payments)
    
-    return render(request, template_name, {'user': user})
+    return render(request, template_name, context)
 
 @login_required
 def my_account_payment(request, user_id):
