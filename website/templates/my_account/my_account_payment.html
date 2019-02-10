@@ -4,16 +4,25 @@
 {% block content %}
 
     <h3>Payment Methods:</h3>
-        {% for payment in payments %}
-        <ul>
-            <li>
-                {{ payment.name }} ends in {{ payment.four }}
-            </li>
-        </ul>
-        {% endfor %}
 
         <button>
             <a href="{% url 'website:my_account_payment_add' user.id %}">Add New Payment Method</a>
         </button>
+
+        {% for payment in payments %}
+        <ul>
+            <li>
+                {{ payment.name }} ends in {{ payment.four }}
+                <form action="{% url 'website:my_account_payment_delete' payment_type_id=payment.id %}" method='POST'>
+                        {% csrf_token %}
+                        <button name='submit'>
+                            Delete Payment Method
+                        </button>
+                </form>
+            </li>
+        </ul>
+        {% endfor %}
+
+        
 
 {% endblock content %}
