@@ -149,6 +149,10 @@ def product_detail(request, product_id):
     template_name = 'product/product_detail.html'
     return render(request, template_name, {'product': product})
 
+# ===================================================
+# My Account Begin
+# ===================================================
+
 def my_account(request, user_id):
     '''user account page'''
 
@@ -184,11 +188,11 @@ def my_account_payment(request, user_id):
             if payment_type_check:
                 error = True
                 return render(request, template_name, {'error':error})
-                # "A payment type with that name already exists"
             new_payment_type = cursor.execute("INSERT INTO website_paymenttype VALUES (%s, %s, %s, %s, %s)", [None, req["name"], req["accountNum"], None, user_id])
 
         return HttpResponseRedirect(reverse('website:my_account', args=(user_id,)))
 
+    return render(request, template_name, {'user': user, 'form':form.as_p()})
 # ------------------------------------
 # ORM WAY
 # ------------------------------------
@@ -217,10 +221,11 @@ def my_account_payment(request, user_id):
 #         )
 #         new_payment.save()
 
-#         return HttpResponseRedirect(reverse('website:my_account', args=(user_id,)))
-    
-    
-    return render(request, template_name, {'user': user, 'form':form.as_p()})
+#         return HttpResponseRedirect(reverse('website:my_account', args=(user_id,))) 
+
+# ===================================================
+# My Account End
+# ===================================================
 
 
 
