@@ -158,6 +158,19 @@ def my_account(request, user_id):
 
     template_name = 'my_account/my_account.html'
     user = User.objects.get(id=user_id)
+    context = {
+        'user': user,
+    }
+    print('user', user_id)
+   
+    return render(request, template_name, context)
+
+@login_required
+def my_account_payment(request, user_id):
+    '''user account page with payment details'''
+
+    template_name = 'my_account/my_account_payment.html'
+    user = User.objects.get(id=user_id)
     sql = '''SELECT id, name, substr(accountNum, -4, 4) as four
             FROM website_paymenttype 
              WHERE buyer_id = %s'''
@@ -172,9 +185,9 @@ def my_account(request, user_id):
     return render(request, template_name, context)
 
 @login_required
-def my_account_payment(request, user_id):
+def my_account_payment_add(request, user_id):
     '''add payment type for user'''
-    template_name = 'my_account/my_account_payment.html'
+    template_name = 'my_account/my_account_payment_add.html'
     user = User.objects.get(id=user_id)
 
     if request.method == "GET":
@@ -190,7 +203,7 @@ def my_account_payment(request, user_id):
                 return render(request, template_name, {'error':error})
             new_payment_type = cursor.execute("INSERT INTO website_paymenttype VALUES (%s, %s, %s, %s, %s)", [None, req["name"], req["accountNum"], None, user_id])
 
-        return HttpResponseRedirect(reverse('website:my_account', args=(user_id,)))
+        return HttpResponseRedirect(reverse('website:my_account_payment', args=(user_id,)))
 
     return render(request, template_name, {'user': user, 'form':form.as_p()})
 # ------------------------------------

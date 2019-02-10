@@ -12,7 +12,8 @@ urlpatterns = [
     path('product_cat/', views.product_cat, name='product_cat'),
     path('product_detail/<int:product_id>/', views.product_detail, name='product_detail'),
     path('my_account/<int:user_id>/', views.my_account, name='my_account'),
-    path('my_account/payment/<int:user_id>/', views.my_account_payment, name='my_account_payment')
+    path('my_account/payment/<int:user_id>/', views.my_account_payment, name='my_account_payment'),
+    path('my_account/payment/add/<int:user_id>/', views.my_account_payment_add, name='my_account_payment_add')
    
    
 
