@@ -253,10 +253,38 @@ def my_account_payment(request, user_id):
 # My Account End
 # ===================================================
 
+def search_results(request):
+
+    template_name = 'search/search_results.html'
+
+    query = request.GET.get('q', '')
+    if query:
+        # query example
+        results = Product.objects.filter(title__icontains=query).distinct()
+    else:
+        results = []
+    return render(request, template_name, {'results': results, 'query': query})
+
+
+def order_product(request, product_id):
+    ''' check if user logged in (add login required) -  if not logged in, redirect to login page with next to enable return after login '''
+    ''' once logged in, query orders by user '''
+    user = request.user
+    sql = '''SELECT *
+          FROM website_order
+          WHERE buyer_id = %s'''
+    print("SQL:", sql)
+
+    ''' if user has open order, grab order number and create new join relationship with order_id and product_id '''
+    ''' if user doesnt have open order, create new order, grab order id and then create new join relationship with order_id and product_id'''
+    ''' redirect user to order_detail page '''
 
 
 def order_detail(request):
     '''order acts like a shopping cart for the user'''
+
+    user = request.user
+
     template_name = 'order/order_detail.html'
-    context = {}
+    context = {'user': user}
     return render(request, template_name, context)
