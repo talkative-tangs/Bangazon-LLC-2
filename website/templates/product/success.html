@@ -1,15 +1,9 @@
+{% extends 'base.html' %}
+
 {% load staticfiles %}
-<!DOCTYPE html>
-<html>
-  <head>
-    <meta charset="utf-8">
-    <title>Bangazon</title>
-  </head>
-  <body>
+{% block content %}
+    <h1>Product successfully added!</h1>
 
-    <h1>Product Added</h1>
-
-    <a href="{% url 'website:list_products' %}">List Products</a>
+    <a href="{% url 'website:index' %}">View Products</a>
   </body>
-</html>
-
+{% endblock content %}
