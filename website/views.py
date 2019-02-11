@@ -147,9 +147,17 @@ def product_sell(request):
 
 
 def product_cat(request):
-    product_cats = ProductType.objects.all()
-    template_name = 'product/product_cat.html'
-    return render(request, template_name, {'categories': product_cats})
+    # product_cats = ProductType.objects.all()
+  try:
+    # By default, Django figures out a database table name by joining the model’s “app label” – the name you used in manage.py startapp – to the model’s class name, with an underscore between them.
+    categories = ProductType.objects.raw('SELECT * FROM website_producttype')
+    products = Product.objects.raw('SELECT * FROM website_product')
+  except ProductType.DoesNotExist:
+    raise Http404("Categories do not exist")
+
+  context = {'categories': categories, 'products': products}
+  template_name = 'product/product_cat.html'
+  return render(request, template_name, context)
 
 #ORM WAY
 # def product_detail(request, product_id):
