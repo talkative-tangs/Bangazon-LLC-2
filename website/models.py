@@ -26,10 +26,10 @@ class ProductType(models.Model):
       name =  models.TextField(blank=False)
       deletedDate = models.DateField(default=None, blank=True, null=True)
 
-      def __str__(self):
-            '''string method that returns the product type name'''
+      # def __str__(self):
+      #       '''string method that returns the product type name'''
 
-            return self.name
+      #       return self.name
 
 class Product(models.Model):
       '''An item that a User can Sell or Buy'''
