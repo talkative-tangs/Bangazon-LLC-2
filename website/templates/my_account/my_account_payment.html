@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% block content %}
+    <p>Add Payment Method:</p>
+    {% if error %}
+        <p> A payment type with that name already exists </p>
+    {% endif %}
+
+    <form action="{% url 'website:my_account_payment' user.id %}" method='POST'>
+        {% csrf_token %}
+        {{ form }}
+        <button name='submit'>Add Payment Method</button>
+    </form>
+{% endblock content %}
