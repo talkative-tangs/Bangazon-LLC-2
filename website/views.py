@@ -239,7 +239,11 @@ def my_account_order_detail(request, order_id):
     '''view order detail of selected order'''
 
     try:
-        sql = '''SELECT * FROM website_order WHERE order_id = %s'''
+        sql = '''SELECT *
+                FROM website_order as wo
+                LEFT JOIN website_productorder as wpo ON wo.id = wpo.order_id
+                LEFT JOIN website_product as wp ON wpo.product_id = wp.id
+                WHERE buyer_id = %s'''
         orders = Order.objects.raw(sql, [order_id])
         print(orders)
     except Order.DoesNotExist:
