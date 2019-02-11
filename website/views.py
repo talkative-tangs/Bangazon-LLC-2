@@ -270,9 +270,17 @@ def my_account_order_history(request, user_id):
 # My Account End
 # ===================================================
 
+def search_results(request):
 
+    template_name = 'search/search_results.html'
 
-
+    query = request.GET.get('q', '')
+    if query:
+        # query example
+        results = Product.objects.filter(title__icontains=query).distinct()
+    else:
+        results = []
+    return render(request, template_name, {'results': results, 'query': query})
 
 
 
