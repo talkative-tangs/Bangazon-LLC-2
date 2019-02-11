@@ -11,6 +11,7 @@ from website.models import *
 # Import this to use the direct db connection
 from django.db import connection
 
+
 #ORM WAY
 # def index(request):
 #     all_products = Product.objects.all()
@@ -34,7 +35,6 @@ def index(request):
 # Create your views here.
 def register(request):
     '''Handles the creation of a new user for authentication
-
     Method arguments:
       request -- The full HTTP request object
     '''
@@ -70,7 +70,6 @@ def register(request):
 
 def login_user(request):
     '''Handles the creation of a new user for authentication
-
     Method arguments:
       request -- The full HTTP request object
     '''
@@ -168,9 +167,83 @@ def product_detail(request, product_id):
     template_name = 'product/product_detail.html'
     return render(request, template_name, {'product': product})
 
-def my_account(request):
+# ===================================================
+# My Account Begin
+# ===================================================
+
+def my_account(request, user_id):
+    '''user account page'''
+
     template_name = 'my_account/my_account.html'
-    return render(request, template_name)
+    user = User.objects.get(id=user_id)
+    sql = '''SELECT id, name, substr(accountNum, -4, 4) as four
+            FROM website_paymenttype 
+             WHERE buyer_id = %s'''
+    payments = PaymentType.objects.raw(sql, [user_id])
+    context = {
+        'user': user,
+        'payments': payments,
+    }
+    print('user', user_id)
+    print('payments', payments)
+   
+    return render(request, template_name, context)
+
+@login_required
+def my_account_payment(request, user_id):
+    '''add payment type for user'''
+    template_name = 'my_account/my_account_payment.html'
+    user = User.objects.get(id=user_id)
+
+    if request.method == "GET":
+            #No data submitted, create a blank form
+            form = PaymentForm()
+
+    if request.method == "POST":
+        req = request.POST
+        with connection.cursor() as cursor:
+            payment_type_check = PaymentType.objects.raw("SELECT * FROM website_paymenttype WHERE name=%s AND accountNum=%s", [req["name"], req["accountNum"]])
+            if payment_type_check:
+                error = True
+                return render(request, template_name, {'error':error})
+            new_payment_type = cursor.execute("INSERT INTO website_paymenttype VALUES (%s, %s, %s, %s, %s)", [None, req["name"], req["accountNum"], None, user_id])
+
+        return HttpResponseRedirect(reverse('website:my_account', args=(user_id,)))
+
+    return render(request, template_name, {'user': user, 'form':form.as_p()})
+# ------------------------------------
+# ORM WAY
+# ------------------------------------
+# @login_required
+# def my_account_payment(request, user_id):
+#     '''Add a new payment method for a particular user'''
+
+#     print('user id', user_id)
+#     template_name = 'my_account/my_account_payment.html'
+#     user = User.objects.get(id=user_id)
+#     print('user', user.id)
+
+#     if request.method != 'POST':
+#         #No data submitted, create a blank form
+#         form = PaymentForm()
+#     else:
+#         #POST data submitted; process data
+#         form = PaymentForm(data=request.POST)
+#         # if form.is_valid():
+#         name = request.POST['name']
+#         accountNum = request.POST['accountNum']
+#         new_payment = PaymentType(
+#             name=name,
+#             accountNum=accountNum,
+#             buyer_id=user.id
+#         )
+#         new_payment.save()
+
+#         return HttpResponseRedirect(reverse('website:my_account', args=(user_id,))) 
+
+# ===================================================
+# My Account End
+# ===================================================
 
 
 

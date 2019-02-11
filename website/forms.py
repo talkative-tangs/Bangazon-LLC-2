@@ -13,4 +13,19 @@ class ProductForm(forms.ModelForm):
 
     class Meta:
         model = Product
-        fields = ('title', 'description', 'price', 'quantity', 'productType')
+        fields = ('title', 'description', 'price', 'quantity',)
+
+class PaymentForm(forms.ModelForm):
+    '''form for adding a payment type'''
+
+    class Meta:
+        model = PaymentType
+        fields = (
+            'name',
+            'accountNum',
+        )
+        labels = {
+            'name': 'Payment Type Name',
+            'accountNum': 'Account Number',
+            }
+       

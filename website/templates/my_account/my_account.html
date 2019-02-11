@@ -2,5 +2,28 @@
 
 {% load staticfiles %}
 {% block content %}
+    {% if user.is_authenticated %}
+    <h1>{{ user.first_name }}'s Account</h1>
+        <ul>
+            <li>Address: {{ user.customer.address }}</li>
+            <li>Phone Number: {{ user.customer.phoneNum }}</li>
+        </ul>
+
+        <h3>Payment Methods:</h3>
+            {% for payment in payments %}
+            <ul>
+                <li>
+                    {{ payment.name }} ends in {{ payment.four }}
+                </li>
+            </ul>
+            {% endfor %}
+    {% else %}
     <h1>My Account</h1>
+    {% endif %}
+
+    <button>
+        <a href="{% url 'website:my_account_payment' user.id %}">Add New Payment Method</a>
+    </button>
 {% endblock content %}
+
+ 
