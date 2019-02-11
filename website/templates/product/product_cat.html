@@ -6,43 +6,43 @@
     <h3>Electronics ({{ electronics_total.total_electronics }})</h3>
     {% for item in electronics %}
     <ul style="list-style-type:none">
-      <li>{{ item.title }}</li>
+      <li><a href="{% url 'website:product_detail' item.id %}">{{ item.title }}</a></li>
     </ul>
     {% endfor %}
     <h3>Furniture ({{furniture_total.total_furniture}})</h3>
     {% for item in furniture %}
     <ul style="list-style-type:none">
-      <li>{{ item.title }}</li>
+      <li><a href="{% url 'website:product_detail' item.id %}">{{ item.title }}</a></li>
     </ul>
     {% endfor %}
     <h3>Cars ({{ cars_total.total_cars }})</h3>
     {% for item in cars %}
     <ul style="list-style-type:none">
-      <li>{{ item.title }}</li>
+      <li><a href="{% url 'website:product_detail' item.id %}">{{ item.title }}</a></li>
     </ul>
     {% endfor %}
     <h3>Books ({{ books_total.total_books }})</h3>
     {% for item in books %}
     <ul style="list-style-type:none">
-      <li>{{ item.title }}</li>
+      <li><a href="{% url 'website:product_detail' item.id %}">{{ item.title }}</a></li>
     </ul>
     {% endfor %}
     <h3>Computers ({{ computers_total.total_computers }})</h3>
     {% for item in computers %}
     <ul style="list-style-type:none">
-      <li>{{ item.title }}</li>
+      <li><a href="{% url 'website:product_detail' item.id %}">{{ item.title }}</a></li>
     </ul>
     {% endfor %}
     <h3>Jewelry ({{ jewelry_total.total_jewelry }})</h3>
     {% for item in jewelry %}
     <ul style="list-style-type:none">
-      <li>{{ item.title }}</li>
+      <li><a href="{% url 'website:product_detail' item.id %}">{{ item.title }}</a></li>
     </ul>
     {% endfor %}
     <h3>Misc ({{ misc_total.total_misc }})</h3>
     {% for item in misc %}
     <ul style="list-style-type:none">
-      <li>{{ item.title }}</li>
+      <li><a href="{% url 'website:product_detail' item.id %}">{{ item.title }}</a></li>
     </ul>
     {% endfor %}
 {% endblock content %}
