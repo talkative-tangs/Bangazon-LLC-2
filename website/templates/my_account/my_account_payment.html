@@ -1,14 +1,31 @@
 {% extends 'base.html' %}
 
+{% load staticfiles %}
 {% block content %}
-    <p>Add Payment Method:</p>
-    {% if error %}
-        <p> A payment type with that name already exists </p>
-    {% endif %}
 
-    <form action="{% url 'website:my_account_payment' user.id %}" method='POST'>
-        {% csrf_token %}
-        {{ form }}
-        <button name='submit'>Add Payment Method</button>
-    </form>
+    <h3>Payment Methods:</h3>
+
+        <form action="{% url 'website:my_account_payment_add' user.id %}" method='GET'>
+            {% csrf_token %}
+            <button>
+                Add New Payment Method
+            </button>
+        </form>
+
+        {% for payment in payments %}
+        <ul>
+            <li>
+                {{ payment.name }} ends in {{ payment.four }}
+                <form action="{% url 'website:my_account_payment_delete' payment_type_id=payment.id %}" method='POST'>
+                        {% csrf_token %}
+                        <button name='submit'>
+                            Delete Payment Method
+                        </button>
+                </form>
+            </li>
+        </ul>
+        {% endfor %}
+
+        
+
 {% endblock content %}

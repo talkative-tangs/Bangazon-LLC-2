@@ -7,6 +7,7 @@ from website.forms import *
 from django.shortcuts import render, get_object_or_404, get_list_or_404
 from django.urls import reverse
 from website.models import *
+from datetime import datetime
 
 # Import this to use the direct db connection
 from django.db import connection
@@ -184,23 +185,34 @@ def my_account(request, user_id):
 
     template_name = 'my_account/my_account.html'
     user = User.objects.get(id=user_id)
-    sql = '''SELECT id, name, substr(accountNum, -4, 4) as four
-            FROM website_paymenttype 
-             WHERE buyer_id = %s'''
-    payments = PaymentType.objects.raw(sql, [user_id])
     context = {
         'user': user,
-        'payments': payments,
     }
     print('user', user_id)
-    print('payments', payments)
    
     return render(request, template_name, context)
 
 @login_required
 def my_account_payment(request, user_id):
-    '''add payment type for user'''
+    '''user account page with payment details'''
+
     template_name = 'my_account/my_account_payment.html'
+    user = User.objects.get(id=user_id)
+    sql = '''SELECT id, name, buyer_id, substr(accountNum, -4, 4) as four
+            FROM website_paymenttype 
+             WHERE buyer_id = %s and deletedDate isnull'''
+    payments = PaymentType.objects.raw(sql, [user_id])
+    context = {
+        'user': user,
+        'payments': payments,
+    }
+   
+    return render(request, template_name, context)
+
+@login_required
+def my_account_payment_add(request, user_id):
+    '''add payment type for user'''
+    template_name = 'my_account/my_account_payment_add.html'
     user = User.objects.get(id=user_id)
 
     if request.method == "GET":
@@ -216,7 +228,7 @@ def my_account_payment(request, user_id):
                 return render(request, template_name, {'error':error})
             new_payment_type = cursor.execute("INSERT INTO website_paymenttype VALUES (%s, %s, %s, %s, %s)", [None, req["name"], req["accountNum"], None, user_id])
 
-        return HttpResponseRedirect(reverse('website:my_account', args=(user_id,)))
+        return HttpResponseRedirect(reverse('website:my_account_payment', args=(user_id,)))
 
     return render(request, template_name, {'user': user, 'form':form.as_p()})
 # ------------------------------------
@@ -249,10 +261,30 @@ def my_account_payment(request, user_id):
 
 #         return HttpResponseRedirect(reverse('website:my_account', args=(user_id,))) 
 
+@login_required
+def my_account_payment_delete(request, payment_type_id):
+    '''delete payment method from payment method list'''
+
+    if request.method == 'POST':
+        with connection.cursor() as cursor:
+            selected_payment = payment_type_id
+            now = str(datetime.now())
+            print('payment', selected_payment)
+            print('now', now)
+
+            cursor.execute("UPDATE website_paymenttype SET deletedDate = %s WHERE id = %s", [now, selected_payment])
+            sql = '''SELECT id, buyer_id FROM website_paymenttype WHERE id = %s'''
+            user = PaymentType.objects.raw(sql, [payment_type_id])[0]
+            print('user', user.buyer_id)
+
+        return HttpResponseRedirect(reverse('website:my_account_payment', args=(user.buyer_id,)))
+
+
 # ===================================================
 # My Account End
 # ===================================================
 
+@login_required
 def search_results(request):
 
     template_name = 'search/search_results.html'
