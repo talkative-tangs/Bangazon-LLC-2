@@ -1,5 +1,6 @@
 from django.contrib.auth import logout, login, authenticate
 from django.contrib.auth.decorators import login_required
+from django.core.exceptions import ValidationError
 from django.http import HttpResponse, HttpResponseRedirect, Http404
 from django.template import RequestContext
 from website.forms import *
@@ -24,7 +25,7 @@ def index(request):
         recent_products = Product.objects.raw('SELECT id, title FROM website_product ORDER BY id DESC LIMIT 20;')
     except Product.DoesNotExist:
         raise Http404("Products do not exist")
-            
+
     template_name = 'index.html'
     return render(request, template_name, {'recent_products': recent_products})
 
@@ -108,7 +109,7 @@ def user_logout(request):
     # in the URL in redirects?????
     return HttpResponseRedirect('/')
 
-
+@login_required
 def product_sell(request):
     if request.method == 'GET':
         product_form = ProductForm()
@@ -117,17 +118,34 @@ def product_sell(request):
 
     elif request.method == 'POST':
         form_data = request.POST
+        product_form = ProductForm(form_data)
 
-        p = Product(
-            seller = request.user,
-            title = form_data['title'],
-            description = form_data['description'],
-            price = form_data['price'],
-            quantity = form_data['quantity'],
-        )
-        p.save()
-        template_name = 'product/success.html'
-        return render(request, template_name, {})
+        if product_form.is_valid():
+            seller = request.user.customer.id
+            title = form_data['title']
+            description = form_data['description']
+            price = form_data['price']
+            quantity = form_data['quantity']
+            productType = form_data['productType']
+
+            data = [seller, title, description, price, quantity, productType]
+            print(data)
+
+            with connection.cursor() as cursor:
+                cursor.execute(f'''INSERT into website_product(
+                    seller_id,
+                    title,
+                    description,
+                    price,
+                    quantity,
+                    productType_id
+                ) VALUES(%s, %s, %s, %s, %s, %s)''', data)
+                product_id = cursor.lastrowid
+                #
+                return HttpResponseRedirect(reverse('website:product_detail', args=(product_id,)))
+        else:
+            raise ValidationError(_('Invalid value: %s'))
+
 
 def product_cat(request):
     product_cats = ProductType.objects.all()
@@ -146,7 +164,7 @@ def product_detail(request, product_id):
         product = Product.objects.raw(sql, [product_id])[0]
     except Product.DoesNotExist:
         raise Http404("Product does not exist")
-            
+
     template_name = 'product/product_detail.html'
     return render(request, template_name, {'product': product})
 
