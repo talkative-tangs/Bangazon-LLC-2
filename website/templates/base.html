@@ -16,13 +16,15 @@
         <div id="navigation">
             <a href="{% url 'website:index' %}">Bangazon</a>
             <a href="{% url 'website:product_cat' %}">Product Categories</a>
+            <a href="{% url 'website:product_sell' %}">Sell Product</a>
+            <a href="{% url 'website:my_account' user.id %}">My Account</a>
+            <a href="{% url 'website:logout' %}">Log Out</a>
+            <br/>
+            <br/>
             <form method="get" action="/search_results/">
                 <input type="text" id="searchBox" class="input-medium search-query" name="q" placeholder="Search for a Product" required>
                 <input type="submit" class="btn" value="Search" >
             </form>
-            <a href="{% url 'website:product_sell' %}">Sell Product</a>
-            <a href="{% url 'website:my_account' user.id %}">My Account</a>
-            <a href="{% url 'website:logout' %}">Log Out</a>
         </div>
         {% else %}
         <div id="navigation">
