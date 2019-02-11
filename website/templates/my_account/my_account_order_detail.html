@@ -1,10 +1,19 @@
 {% extends 'base.html' %}
+<!-- humanize is a Django library that allows manipulation of numbers/data for readability -->
+{% load humanize %}
 
 {% load staticfiles %}
 {% block content %}
     {% if user.is_authenticated %}
-    <h1>Order Detail</h1>
-
+    <h1>Order #{{ order_id }} Detail</h1>
     {% endif %}
 
+    <ul>
+    {% for product in products %}
+      <li>{{ product.title }} - ${{ product.price }}</li>
+    {% endfor %}
+    </ul>
+
+    <!-- this humanizes order_total and adds a comma and two decimal places -->
+    <h3>Order Total: ${{ ordertotal.order_total|floatformat:2|intcomma }}</h3>
 {% endblock content %}
