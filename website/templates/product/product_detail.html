@@ -7,7 +7,7 @@
 <p>Quantity Available: {{ product.quantity }}</p>
 <p>Price Per Unit: ${{ product.price }}</p>
 
-<form id="order_detail" method="post" action="{% url 'website:order_detail' %}">
+<form id="order_product" method="post" action="{% url 'website:order_product' product.id %}">
 <form>
   {% csrf_token %}
   <button>Add to Order</button>

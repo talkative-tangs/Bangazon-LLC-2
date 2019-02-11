@@ -300,19 +300,46 @@ def search_results(request):
 
 def order_product(request, product_id):
     ''' check if user logged in (add login required) -  if not logged in, redirect to login page with next to enable return after login '''
-    ''' once logged in, query orders by user '''
+    # once logged in, query orders by user
     user = request.user
     sql = '''SELECT *
           FROM website_order
-          WHERE buyer_id = %s'''
-    print("SQL:", sql)
+          WHERE buyer_id = %s
+          AND paymentType_id IS NULL'''
+
+    open_order = Order.objects.raw(sql, [user.id])[0]
+
+    print("Open Order ID:", open_order.id)
+    # print("Product ID:", product_id)
 
     ''' if user has open order, grab order number and create new join relationship with order_id and product_id '''
+    if open_order:
+      with connection.cursor() as cursor:
+          cursor.execute("INSERT into website_productorder VALUES (%s, %s, %s)", [ None, open_order.id, product_id ])
+          return HttpResponseRedirect(reverse('website:order_detail', args=(open_order,)))
+
+    else:
+      with connection.cursor() as cursor:
+          new_order = cursor.execute(f'''INSERT into website_order(
+            deleted_date,
+            buyer_id,
+            paymentType_id
+          ) VALUES(%s, %s, %s)''', None, [user.id], None)
+
+          cursor.execute(f'''INSERT into website_productorder(
+            order_id,
+            product_id
+          ) VALUES(%s, %s,)''', [new_order.id], [product_id])
+          return HttpResponseRedirect(reverse('website:order_detail', args=(new_order.id,)))
+
+
+
+
     ''' if user doesnt have open order, create new order, grab order id and then create new join relationship with order_id and product_id'''
     ''' redirect user to order_detail page '''
 
 
-def order_detail(request):
+def order_detail(request, order_id):
     '''order acts like a shopping cart for the user'''
 
     user = request.user
