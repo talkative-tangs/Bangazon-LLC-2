@@ -237,7 +237,7 @@ def my_account_order_history(request, user_id):
     '''view order history of current user'''
 
     try:
-        sql = '''SELECT * FROM website_order WHERE buyer_id = %s'''
+        sql = '''SELECT * FROM website_order WHERE buyer_id = %s and paymentType_id IS NOT NULL'''
         orders = Order.objects.raw(sql, [user_id])
     except Order.DoesNotExist:
         raise Http404("No orders exist")
