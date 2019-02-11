@@ -6,7 +6,9 @@
     <h1>{{ user.first_name }}'s Order History</h1>
     {% endif %}
 
+    <ul>
     {% for order in orders %}
-    <h5>Order #{{order.id}} // date? // total?</h5>
+    <li><a href="{% url 'website:my_account_order_detail' order.id %}">Order #{{order.id}}</a></li>
     {% endfor %}
+    </ul>
 {% endblock content %}

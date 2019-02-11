@@ -223,16 +223,29 @@ def my_account_payment(request, user_id):
 @login_required
 def my_account_order_history(request, user_id):
     '''view order history of current user'''
-    # user = User.objects.get(id=user_id)
 
     try:
         sql = '''SELECT * FROM website_order WHERE buyer_id = %s'''
-        orders = Order.objects.raw(sql, [user_id])[0]
-        print(orders)
+        orders = Order.objects.raw(sql, [user_id])
     except Order.DoesNotExist:
         raise Http404("No orders exist")
 
     template_name = 'my_account/my_account_order_history.html'
+
+    return render(request, template_name, {'orders': orders})
+
+@login_required
+def my_account_order_detail(request, order_id):
+    '''view order detail of selected order'''
+
+    try:
+        sql = '''SELECT * FROM website_order WHERE order_id = %s'''
+        orders = Order.objects.raw(sql, [order_id])
+        print(orders)
+    except Order.DoesNotExist:
+        raise Http404("No orders exist")
+
+    template_name = 'my_account/my_account_order_detail.html'
 
     return render(request, template_name, {'orders': orders})
 
