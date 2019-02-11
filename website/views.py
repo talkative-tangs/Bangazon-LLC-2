@@ -263,6 +263,6 @@ def search_results(request):
         results = Product.objects.filter(title__icontains=query).distinct()
     else:
         results = []
-    return render(request, template_name, {'results': results})
+    return render(request, template_name, {'results': results, 'query': query})
 
 
