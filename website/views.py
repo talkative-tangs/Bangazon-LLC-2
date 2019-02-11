@@ -185,7 +185,7 @@ def my_account(request, user_id):
     template_name = 'my_account/my_account.html'
     user = User.objects.get(id=user_id)
     sql = '''SELECT id, name, substr(accountNum, -4, 4) as four
-            FROM website_paymenttype 
+            FROM website_paymenttype
              WHERE buyer_id = %s'''
     payments = PaymentType.objects.raw(sql, [user_id])
     context = {
@@ -194,7 +194,7 @@ def my_account(request, user_id):
     }
     print('user', user_id)
     print('payments', payments)
-   
+
     return render(request, template_name, context)
 
 @login_required
@@ -247,7 +247,7 @@ def my_account_payment(request, user_id):
 #         )
 #         new_payment.save()
 
-#         return HttpResponseRedirect(reverse('website:my_account', args=(user_id,))) 
+#         return HttpResponseRedirect(reverse('website:my_account', args=(user_id,)))
 
 # ===================================================
 # My Account End
@@ -255,6 +255,8 @@ def my_account_payment(request, user_id):
 
 
 
-
-
-
+def order_detail(request):
+    '''order acts like a shopping cart for the user'''
+    template_name = 'order/order_detail.html'
+    context = {}
+    return render(request, template_name, context)
