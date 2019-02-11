@@ -5,9 +5,12 @@
 
     <h3>Payment Methods:</h3>
 
-        <button>
-            <a href="{% url 'website:my_account_payment_add' user.id %}">Add New Payment Method</a>
-        </button>
+        <form action="{% url 'website:my_account_payment_add' user.id %}" method='GET'>
+            {% csrf_token %}
+            <button>
+                Add New Payment Method
+            </button>
+        </form>
 
         {% for payment in payments %}
         <ul>

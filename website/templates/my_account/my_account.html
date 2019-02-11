@@ -9,9 +9,16 @@
             <li>Phone Number: {{ user.customer.phoneNum }}</li>
         </ul>
 
-        <button>
+        <form action="{% url 'website:my_account_payment' user.id %}" method='GET'>
+            {% csrf_token %}
+            <button>
+                Payment Options
+            </button>
+        </form>
+
+        <!-- <button>
             <a href="{% url 'website:my_account_payment' user.id %}">Payment Options</a>
-        </button>
+        </button> -->
         
     {% else %}
     <h1>My Account</h1>
