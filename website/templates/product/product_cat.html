@@ -11,7 +11,7 @@
           <ul style="list-style-type:none">
             {% for product in products %}
             {% if product.productType_id == category.id%}
-            <li>{{ product.title }}</li>
+            <li><a href="{% url 'website:product_detail' product.id %}">{{ product.title }}</a></li>
             {% endif %}
             {% endfor %}
           </ul>
