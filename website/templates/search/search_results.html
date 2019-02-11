@@ -1,6 +1,8 @@
 {% extends 'base.html' %}
 
 {% block content %}
+
+<h3>Search Results:</h3>
 <ul style="list-style-type:none">
     {% for result in results %}
         <li><a href="{% url 'website:product_detail' result.id %}">{{ result.title }}</a></li>
