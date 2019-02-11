@@ -6,7 +6,7 @@ from datetime import datetime, date
 # Create your models here.
 class Customer(models.Model):
       '''A user that can place an order/a buyer'''
-      user = models.ForeignKey(
+      user = models.OneToOneField(
         User,
         on_delete=models.PROTECT
       )
