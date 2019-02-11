@@ -9,7 +9,7 @@
           <li>{{ category.name }}</li>
           {% if products %}
           <ul style="list-style-type:none">
-            {% for product in products%}
+            {% for product in products %}
             {% if product.productType_id == category.id%}
             <li>{{ product.title }}</li>
             {% endif %}
