@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% block content %}
+    {% if user.is_authenticated %}
+    <h1>{{ user.first_name }}'s Order History</h1>
+    {% endif %}
+
+    {% for order in orders %}
+    <h5>Order #{{order.id}} // date? // total?</h5>
+    {% endfor %}
+{% endblock content %}

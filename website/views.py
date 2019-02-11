@@ -185,7 +185,7 @@ def my_account(request, user_id):
     template_name = 'my_account/my_account.html'
     user = User.objects.get(id=user_id)
     sql = '''SELECT id, name, substr(accountNum, -4, 4) as four
-            FROM website_paymenttype 
+            FROM website_paymenttype
              WHERE buyer_id = %s'''
     payments = PaymentType.objects.raw(sql, [user_id])
     context = {
@@ -194,7 +194,7 @@ def my_account(request, user_id):
     }
     print('user', user_id)
     print('payments', payments)
-   
+
     return render(request, template_name, context)
 
 @login_required
@@ -219,6 +219,23 @@ def my_account_payment(request, user_id):
         return HttpResponseRedirect(reverse('website:my_account', args=(user_id,)))
 
     return render(request, template_name, {'user': user, 'form':form.as_p()})
+
+@login_required
+def my_account_order_history(request, user_id):
+    '''view order history of current user'''
+    # user = User.objects.get(id=user_id)
+
+    try:
+        sql = '''SELECT * FROM website_order WHERE buyer_id = %s'''
+        orders = Order.objects.raw(sql, [user_id])[0]
+        print(orders)
+    except Order.DoesNotExist:
+        raise Http404("No orders exist")
+
+    template_name = 'my_account/my_account_order_history.html'
+
+    return render(request, template_name, {'orders': orders})
+
 # ------------------------------------
 # ORM WAY
 # ------------------------------------
@@ -247,11 +264,12 @@ def my_account_payment(request, user_id):
 #         )
 #         new_payment.save()
 
-#         return HttpResponseRedirect(reverse('website:my_account', args=(user_id,))) 
+#         return HttpResponseRedirect(reverse('website:my_account', args=(user_id,)))
 
 # ===================================================
 # My Account End
 # ===================================================
+
 
 
 

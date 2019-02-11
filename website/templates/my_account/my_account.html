@@ -17,6 +17,7 @@
                 </li>
             </ul>
             {% endfor %}
+        <h3><a href="{% url 'website:my_account_order_history' user.id %}">Order History</a></h3>
     {% else %}
     <h1>My Account</h1>
     {% endif %}
@@ -24,6 +25,7 @@
     <button>
         <a href="{% url 'website:my_account_payment' user.id %}">Add New Payment Method</a>
     </button>
+
+
 {% endblock content %}
 
- 
