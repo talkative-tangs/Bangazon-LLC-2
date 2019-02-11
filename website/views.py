@@ -265,8 +265,6 @@ def my_account_payment_add(request, user_id):
 def my_account_payment_delete(request, payment_type_id):
     '''delete payment method from payment method list'''
 
-    # user = User.objects.get(id=user_id)
-    # print('user', user)
     if request.method == 'POST':
         with connection.cursor() as cursor:
             selected_payment = payment_type_id
@@ -275,7 +273,6 @@ def my_account_payment_delete(request, payment_type_id):
             print('now', now)
 
             cursor.execute("UPDATE website_paymenttype SET deletedDate = %s WHERE id = %s", [now, selected_payment])
-            # user = cursor.execute("SELECT buyer_id FROM website_paymenttype WHERE id = %s", [selected_payment])
             sql = '''SELECT id, buyer_id FROM website_paymenttype WHERE id = %s'''
             user = PaymentType.objects.raw(sql, [payment_type_id])[0]
             print('user', user.buyer_id)
