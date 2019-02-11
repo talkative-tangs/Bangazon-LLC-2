@@ -284,6 +284,7 @@ def my_account_payment_delete(request, payment_type_id):
 # My Account End
 # ===================================================
 
+@login_required
 def search_results(request):
 
     template_name = 'search/search_results.html'
