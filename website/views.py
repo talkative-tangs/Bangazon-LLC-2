@@ -129,7 +129,6 @@ def product_sell(request):
             productType = form_data['productType']
 
             data = [seller, title, description, price, quantity, productType]
-            print(data)
 
             with connection.cursor() as cursor:
                 cursor.execute(f'''INSERT into website_product(
@@ -286,7 +285,6 @@ def my_account(request, user_id):
     context = {
         'user': user,
     }
-    print('user', user_id)
 
     return render(request, template_name, context)
 
@@ -411,13 +409,10 @@ def my_account_payment_delete(request, payment_type_id):
         with connection.cursor() as cursor:
             selected_payment = payment_type_id
             now = str(datetime.now())
-            print('payment', selected_payment)
-            print('now', now)
 
             cursor.execute("UPDATE website_paymenttype SET deletedDate = %s WHERE id = %s", [now, selected_payment])
             sql = '''SELECT id, buyer_id FROM website_paymenttype WHERE id = %s'''
             user = PaymentType.objects.raw(sql, [payment_type_id])[0]
-            print('user', user.buyer_id)
 
         return HttpResponseRedirect(reverse('website:my_account_payment', args=(user.buyer_id,)))
 
@@ -459,8 +454,6 @@ def order_product(request, product_id):
     except IndexError:
         open_order = None
 
-    print("OPEN ORDER", open_order)
-
     ''' if user has open order, grab order number and create new join relationship with order_id and product_id '''
     if open_order is not None:
       with connection.cursor() as cursor:
@@ -472,7 +465,6 @@ def order_product(request, product_id):
           cursor.execute("INSERT into website_order VALUES (%s, %s, %s, %s)", [ None, None, user.id, None ])
           sql = ''' SELECT * FROM website_order ORDER BY id DESC LIMIT 1'''
           new_order = Order.objects.raw(sql,)[0]
-          print("NEW ORDER ID:", new_order)
 
           cursor.execute("INSERT into website_productorder VALUES (%s, %s, %s)", [ None, new_order.id, product_id])
           return HttpResponseRedirect(reverse('website:order_detail', args=(new_order.id,)))
