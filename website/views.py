@@ -287,7 +287,7 @@ def my_account(request, user_id):
         'user': user,
     }
     print('user', user_id)
-   
+
     return render(request, template_name, context)
 
 @login_required
@@ -297,14 +297,14 @@ def my_account_payment(request, user_id):
     template_name = 'my_account/my_account_payment.html'
     user = User.objects.get(id=user_id)
     sql = '''SELECT id, name, buyer_id, substr(accountNum, -4, 4) as four
-            FROM website_paymenttype 
+            FROM website_paymenttype
              WHERE buyer_id = %s and deletedDate isnull'''
     payments = PaymentType.objects.raw(sql, [user_id])
     context = {
         'user': user,
         'payments': payments,
     }
-   
+
     return render(request, template_name, context)
 
 @login_required
@@ -329,6 +329,47 @@ def my_account_payment_add(request, user_id):
         return HttpResponseRedirect(reverse('website:my_account_payment', args=(user_id,)))
 
     return render(request, template_name, {'user': user, 'form':form.as_p()})
+
+@login_required
+def my_account_order_history(request, user_id):
+    '''view order history of current user'''
+
+    try:
+        sql = '''SELECT * FROM website_order WHERE buyer_id = %s and paymentType_id IS NOT NULL'''
+        orders = Order.objects.raw(sql, [user_id])
+    except Order.DoesNotExist:
+        raise Http404("No orders exist")
+
+    template_name = 'my_account/my_account_order_history.html'
+
+    return render(request, template_name, {'orders': orders})
+
+@login_required
+def my_account_order_detail(request, order_id):
+    '''view order detail of selected order'''
+
+    order_id = order_id
+
+    try:
+        sql = '''SELECT *
+                FROM website_order as wo
+                LEFT JOIN website_productorder as wpo ON wo.id = wpo.order_id
+                LEFT JOIN website_product as wp ON wpo.product_id = wp.id
+                WHERE order_id = %s'''
+        products = Order.objects.raw(sql, [order_id])
+        totalsql = '''SELECT wo.id, SUM(price) as order_total
+                FROM website_order as wo
+                LEFT JOIN website_productorder as wpo ON wo.id = wpo.order_id
+                LEFT JOIN website_product as wp ON wpo.product_id = wp.id
+                WHERE order_id = %s'''
+        ordertotal = Order.objects.raw(totalsql, [order_id])[0]
+    except Order.DoesNotExist:
+        raise Http404("No orders exist")
+
+    template_name = 'my_account/my_account_order_detail.html'
+
+    return render(request, template_name, {'order_id': order_id, 'products': products, 'ordertotal': ordertotal})
+
 # ------------------------------------
 # ORM WAY
 # ------------------------------------
@@ -357,7 +398,7 @@ def my_account_payment_add(request, user_id):
 #         )
 #         new_payment.save()
 
-#         return HttpResponseRedirect(reverse('website:my_account', args=(user_id,))) 
+#         return HttpResponseRedirect(reverse('website:my_account', args=(user_id,)))
 
 @login_required
 def my_account_payment_delete(request, payment_type_id):
@@ -394,5 +435,6 @@ def search_results(request):
     else:
         results = []
     return render(request, template_name, {'results': results, 'query': query})
+
 
 

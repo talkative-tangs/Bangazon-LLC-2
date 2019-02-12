@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% block content %}
+    {% if user.is_authenticated %}
+    <h1>{{ user.first_name }}'s Order History</h1>
+    {% endif %}
+
+    <ul>
+    {% for order in orders %}
+    <li><a href="{% url 'website:my_account_order_detail' order.id %}">Order #{{order.id}}</a></li>
+    {% endfor %}
+    </ul>
+{% endblock content %}

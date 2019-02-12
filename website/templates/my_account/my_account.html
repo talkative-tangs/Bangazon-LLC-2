@@ -16,15 +16,16 @@
             </button>
         </form>
 
+        <h3><a href="{% url 'website:my_account_order_history' user.id %}">Order History</a></h3>
+
         <!-- <button>
             <a href="{% url 'website:my_account_payment' user.id %}">Payment Options</a>
         </button> -->
-        
+
     {% else %}
     <h1>My Account</h1>
     {% endif %}
 
-    
+
 {% endblock content %}
 
- 
