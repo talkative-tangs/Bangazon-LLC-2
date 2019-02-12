@@ -332,7 +332,7 @@ def order_product(request, product_id):
 
 
 def order_detail(request, order_id):
-    '''order acts like a shopping cart for the user'''
+    '''order detail acts like a shopping cart for the user'''
 
     user = request.user
     sql = '''SELECT *
@@ -342,10 +342,26 @@ def order_detail(request, order_id):
     orders = ProductOrder.objects.raw(sql, [order_id])
 
     template_name = 'order/order_detail.html'
-    context = {'user': user, 'orders': orders}
+    context = {'user': user, 'orders': orders, 'current_order_id': order_id}
     return render(request, template_name, context)
 
 
+def order_cancel(request, order_id):
+    ''' allows user to cancel order '''
+    if request.method == 'POST':
+      with connection.cursor() as cursor:
+          cursor.execute("DELETE FROM website_order WHERE id = %s", [order_id])
+
+    return HttpResponseRedirect(reverse('website:index'))
+
+
+def order_product_to_delete(request, order_product_to_delete):
+    ''' allows user to delete product from order '''
+    if request.method == 'POST':
+      with connection.cursor() as cursor:
+          cursor.execute("DELETE FROM website_productorder WHERE id = %s", [order_product_to_delete])
+
+    return HttpResponseRedirect(reverse('website:index'))
 
 
 def order_payment(request, order_id):

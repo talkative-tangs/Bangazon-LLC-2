@@ -16,20 +16,26 @@
   <tr>
     <td>{{ order.product.title }}</td>
     <td>{{ order.product.price }}</td>
-    <td><button>delete</button></td>
+    <td>
+        <form action="{% url 'website:order_product_to_delete' order_product_to_delete=order.id %}" method='POST'>
+            {% csrf_token %}
+            <button>delete</button>
+        </form>
+    </td>
   </tr>
     {% endfor%}
   {% endif %}
 </table>
 
-    {% csrf_token %}
+{% csrf_token %}
   <button>
     Complete Order
   </button>
-
-  <button>
-    Cancel Order
-  </button>
-
+  <form action="{% url 'website:order_cancel' order_id=current_order_id %}" method='POST'>
+      {% csrf_token %}
+    <button>
+      Cancel Order
+    </button>
+  </form>
 
 {% endblock content %}
