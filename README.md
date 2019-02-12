@@ -119,7 +119,7 @@ Django is a Python Web framework. This project uses Django and requires Python t
 
 [Django for Windows](https://docs.djangoproject.com/en/2.1/howto/windows/)
 
-# Installing Bangazon API
+# Installing Bangazon
 
 As of now, the database is going to be hosted on your local computer. There are a few things you need to make sure are in place before the database can be up and running.
 
@@ -140,6 +140,33 @@ Ctrl+C to quit
 
 ## Using the App
 `http://localhost:8000` is the domain you will use to access the app.
+
+### Index
+Once you access `http://localhost:8000` you will be directed to the main page where the latest 20 products are listed.
+
+If you are not logged in you will see a navigation bar with the following links:
+Bangazon(Home Page), Product Categories, My Account, Register, and Login
+
+Once you login you will see a navigation bar as follows:
+Bangazon(Home Page), Product Categories, Sell Product, My Account, Log Out, and a search feature to find items by keyword.
+
+### Product Categories
+Displays a listing of product categories with a total number of products in that category to the right of the category name.  Additionally, you will see the last three products added to the category.
+
+### Sell Product
+Displays a form allowing a user to add product to sell on Bangazon.  This link will only be visible to authenticated users.  The person filling out the form will be able to enter a title, description, price, quantity, and a product type.
+
+### My Account
+Displays the customer information related to the logged in user.  There the user will see address, phone number, a button for payment methods, and a link to order history.
+
+    * Payment Methods:
+        Displays a list of all available payment methods for the user.  The user will also have the ability to delete payment methods from this screen.
+    * Order History:
+        Displays a list of the user's order history with links to the order details.  The order details will include information about each line item incuding price.  The order total will also be displayed.
+
+### Search
+Functionality that enables the user to search Bangazon using keywords.  Once a user enters a search term in the search box they will be redirected to a list of results when they either click search or 'enter'
+
 
 
 This repo created by the Talkative Tangs of Cohort 28:
