@@ -27,10 +27,13 @@
   {% endif %}
 </table>
 
+<form action="{% url 'website:order_payment' order_id=current_order_id %}" method='POST'>
 {% csrf_token %}
   <button>
     Complete Order
   </button>
+</form>
+
   <form action="{% url 'website:order_cancel' order_id=current_order_id %}" method='POST'>
       {% csrf_token %}
     <button>

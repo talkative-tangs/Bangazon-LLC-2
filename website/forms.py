@@ -29,4 +29,3 @@ class PaymentForm(forms.ModelForm):
             'name': 'Payment Type Name',
             'accountNum': 'Account Number',
             }
-

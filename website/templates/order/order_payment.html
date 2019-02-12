@@ -3,7 +3,7 @@
 {% block content %}
 
 <h1>Order Detail</h1>
-<p>{{ user.first_name }}'s Cart</p>
+<p>{{ currentuser.first_name }}'s Cart</p>
 <table>
   <tr>
     <td><strong>Product</strong></td>
@@ -16,16 +16,19 @@
   <tr>
     <td>{{ order.product.title }}</td>
     <td>{{ order.product.price }}</td>
-    <td><button>delete</button></td>
+    <td></td>
   </tr>
     {% endfor%}
   {% endif %}
 </table>
 
-<form>
+<h2>Select Payment</h2>
+<form action="{% url 'website:order_success' order_id=order_id %}" method='POST'>
     {% csrf_token %}
-    <select>
-      <option>1</option>
+    <select name="payment_type" id="payment_type">
+      {% for payment_type in payment_types %}
+      <option id="{{ payment_type.id }}" value="{{ payment_type.id }}">{{ payment_type.name }}</option>
+      {% endfor %}
     </select>
     <button>
       Done
