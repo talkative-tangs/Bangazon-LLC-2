@@ -2,6 +2,10 @@
 
 This web application is the source code for the Bangazon e-commerce web site. It is powered by Python and Django.
 
+## Link to ERD
+
+![Bangazon-ERD](Website/images/Bangazon-ERD.png "Bangazon-ERD")
+
 ## Helpful Resources
 
 ### Django Models and Migrations
@@ -114,3 +118,36 @@ Django is a Python Web framework. This project uses Django and requires Python t
 [Django Install](https://docs.djangoproject.com/en/2.1/topics/install/)
 
 [Django for Windows](https://docs.djangoproject.com/en/2.1/howto/windows/)
+
+# Installing Bangazon API
+
+As of now, the database is going to be hosted on your local computer. There are a few things you need to make sure are in place before the database can be up and running.
+
+Fork and clone the repo on to you local machine. 
+
+Run makemigrations
+`python manage.py makemigrations Website`
+Run migrate
+`python manage.py migrate`
+>This will create all the migrations needed for Django Framework to post items to the database based on the models in the Models/ directory
+Create initial SQL data. Nagivate to the Bangazon-LLC directory and run:
+`sqlite3 db.sqlite < data.sql`
+
+## Run Server
+
+`python manage.py runserver 8000`
+Ctrl+C to quit
+
+## Using the App
+`http://localhost:8000` is the domain you will use to access the app.
+
+
+This repo created by the Talkative Tangs of Cohort 28:
+
+[Bryan Nilsen](https://github.com/BryanNilsen): Training Programs Module - Team Lead
+
+[Lesley Boyd](https://github.com/laboyd001): Computers Module
+
+[Ousama Elayan](https://github.com/ousamasama/): Departments Module
+
+[Elyse Dawson](https://github.com/CurtainUp): Employees Module
