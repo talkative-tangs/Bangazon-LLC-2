@@ -297,9 +297,9 @@ def search_results(request):
         results = []
     return render(request, template_name, {'results': results, 'query': query})
 
-
+@login_required
 def order_product(request, product_id):
-    ''' check if user logged in (add login required) -  if not logged in, redirect to login page with next to enable return after login '''
+    ''' first checks if user has any open orders '''
     # once logged in, query orders by user
     user = request.user
     sql = '''SELECT *
@@ -307,43 +307,57 @@ def order_product(request, product_id):
           WHERE buyer_id = %s
           AND paymentType_id IS NULL'''
 
-    open_order = Order.objects.raw(sql, [user.id])[0]
+    try:
+        open_order = Order.objects.raw(sql, [user.id])[0]
+    except IndexError:
+        open_order = None
 
-    print("Open Order ID:", open_order.id)
-    # print("Product ID:", product_id)
+    print("OPEN ORDER", open_order)
 
     ''' if user has open order, grab order number and create new join relationship with order_id and product_id '''
-    if open_order:
+    if open_order is not None:
       with connection.cursor() as cursor:
           cursor.execute("INSERT into website_productorder VALUES (%s, %s, %s)", [ None, open_order.id, product_id ])
           return HttpResponseRedirect(reverse('website:order_detail', args=(open_order,)))
 
     else:
       with connection.cursor() as cursor:
-          new_order = cursor.execute(f'''INSERT into website_order(
-            deleted_date,
-            buyer_id,
-            paymentType_id
-          ) VALUES(%s, %s, %s)''', None, [user.id], None)
+          cursor.execute("INSERT into website_order VALUES (%s, %s, %s, %s)", [ None, None, user.id, None ])
+          sql = ''' SELECT * FROM website_order ORDER BY id DESC LIMIT 1'''
+          new_order = Order.objects.raw(sql,)[0]
+          print("NEW ORDER ID:", new_order)
 
-          cursor.execute(f'''INSERT into website_productorder(
-            order_id,
-            product_id
-          ) VALUES(%s, %s,)''', [new_order.id], [product_id])
+          cursor.execute("INSERT into website_productorder VALUES (%s, %s, %s)", [ None, new_order.id, product_id])
           return HttpResponseRedirect(reverse('website:order_detail', args=(new_order.id,)))
-
-
-
-
-    ''' if user doesnt have open order, create new order, grab order id and then create new join relationship with order_id and product_id'''
-    ''' redirect user to order_detail page '''
 
 
 def order_detail(request, order_id):
     '''order acts like a shopping cart for the user'''
 
     user = request.user
+    sql = '''SELECT *
+      FROM website_productorder
+      WHERE order_id = %s'''
+
+    orders = ProductOrder.objects.raw(sql, [order_id])
 
     template_name = 'order/order_detail.html'
-    context = {'user': user}
+    context = {'user': user, 'orders': orders}
     return render(request, template_name, context)
+
+
+
+
+def order_payment(request, order_id):
+    '''adds payment type and completes order'''
+
+    user = request.user
+    sql = '''SELECT *
+      FROM website_productorder
+      WHERE order_id = %s'''
+    orders = ProductOrder.objects.raw(sql, [order_id])
+
+    template_name = 'order/order_payment.html'
+    context = {'user': user, 'orders': orders}
+    return render(request, template_name, context)
+

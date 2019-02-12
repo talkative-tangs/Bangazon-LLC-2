@@ -22,14 +22,15 @@
   {% endif %}
 </table>
 
+<form>
     {% csrf_token %}
-  <button>
-    Complete Order
-  </button>
-
-  <button>
-    Cancel Order
-  </button>
+    <select>
+      <option>1</option>
+    </select>
+    <button>
+      Done
+    </button>
+</form>
 
 
 {% endblock content %}
