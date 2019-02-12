@@ -23,11 +23,11 @@
 </table>
 
 <h2>Select Payment</h2>
-<form>
+<form action="{% url 'website:order_success' order_id=order_id %}" method='POST'>
     {% csrf_token %}
-    <select>
+    <select name="payment_type" id="payment_type">
       {% for payment_type in payment_types %}
-      <option>{{ payment_type.name }}</option>
+      <option id="{{ payment_type.id }}" value="{{ payment_type.id }}">{{ payment_type.name }}</option>
       {% endfor %}
     </select>
     <button>

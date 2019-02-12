@@ -520,18 +520,23 @@ def order_payment(request, order_id):
       WHERE order_id = %s'''
     orders = ProductOrder.objects.raw(sql, [order_id])
 
-    print("customer_id", currentuser.customer.id)
-
     user_payments_sql = '''SELECT website_paymenttype.id, website_paymenttype.name
         FROM website_paymenttype
         JOIN website_customer ON website_paymenttype.buyer_id = website_customer.id
         WHERE website_paymenttype.buyer_id = %s AND website_paymenttype.deletedDate IS NULL'''
 
     payment_types = PaymentType.objects.raw(user_payments_sql, [currentuser.customer.id])
-    print("PAYMENTTYPES:", payment_types)
 
     template_name = 'order/order_payment.html'
-    context = {'currentuser': currentuser, 'orders': orders, 'payment_types': payment_types }
+    context = {'currentuser': currentuser, 'orders': orders, 'payment_types': payment_types, 'order_id': order_id }
     return render(request, template_name, context)
 
 
+def order_success(request, order_id):
+      '''adds payment type to order and redirects after successful order completion '''
+      payment_id = request.POST["payment_type"]
+      with connection.cursor() as cursor:
+          cursor.execute("UPDATE website_order SET paymentType_id = %s WHERE website_order.id = %s", [payment_id, order_id])
+
+      template_name = 'order/order_success.html'
+      return render (request, template_name)

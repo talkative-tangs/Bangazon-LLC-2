@@ -23,7 +23,7 @@ urlpatterns = [
     path('order_payment/<int:order_id>', views.order_payment, name='order_payment'),
     path('order_cancel/<int:order_id>', views.order_cancel, name='order_cancel'),
     path('order_product_to_delete/<int:order_product_to_delete>', views.order_product_to_delete, name='order_product_to_delete'),
-    path('order_success/', views.order_success, name='order_success')
+    path('order_success/<int:order_id>', views.order_success, name='order_success'),
     # End Order --------------
 
     # My Account ---------
