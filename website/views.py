@@ -147,18 +147,116 @@ def product_sell(request):
             raise ValidationError(_('Invalid value: %s'))
 
 
-def product_cat(request):
-    # product_cats = ProductType.objects.all()
-  try:
-    # By default, Django figures out a database table name by joining the model’s “app label” – the name you used in manage.py startapp – to the model’s class name, with an underscore between them.
-    categories = ProductType.objects.raw('SELECT * FROM website_producttype')
-    products = Product.objects.raw('SELECT * FROM website_product')
-  except ProductType.DoesNotExist:
-    raise Http404("Categories do not exist")
+# def product_cat(request):
+#     # product_cats = ProductType.objects.all()
+#   try:
+#     # By default, Django figures out a database table name by joining the model’s “app label” – the name you used in manage.py startapp – to the model’s class name, with an underscore between them.
+#     categories = ProductType.objects.raw('SELECT * FROM website_producttype')
+#     products = Product.objects.raw('SELECT * FROM website_product')
+#   except ProductType.DoesNotExist:
+#     raise Http404("Categories do not exist")
 
-  context = {'categories': categories, 'products': products}
-  template_name = 'product/product_cat.html'
-  return render(request, template_name, context)
+#   context = {'categories': categories, 'products': products}
+#   template_name = 'product/product_cat.html'
+#   return render(request, template_name, context)
+
+def product_cat(request):
+    electronics = ProductType.objects.raw('''
+    SELECT website_producttype.name, website_product.title, website_product.id
+    FROM website_product 
+    JOIN website_producttype ON website_product.productType_id = website_producttype.id 
+    WHERE website_producttype.name = "Electronics" 
+    ORDER BY website_product.id DESC LIMIT 3''')
+
+    electronics_total = ProductType.objects.raw('''
+    SELECT COUNT(website_product.id) as total_electronics, website_product.id
+    FROM website_product 
+    JOIN website_producttype ON website_product.productType_id = website_producttype.id 
+    WHERE website_producttype.name = "Electronics"''')[0]
+
+    computers = ProductType.objects.raw('''
+    SELECT website_producttype.name, website_product.title, website_product.id 
+    FROM website_product 
+    JOIN website_producttype ON website_product.productType_id = website_producttype.id 
+    WHERE website_producttype.name = "Computers" 
+    ORDER BY website_product.id DESC LIMIT 3''')
+
+    computers_total = ProductType.objects.raw('''
+    SELECT COUNT(website_product.id) as total_computers, website_product.id
+    FROM website_product 
+    JOIN website_producttype ON website_product.productType_id = website_producttype.id 
+    WHERE website_producttype.name = "Computers"''')[0]
+
+    furniture = ProductType.objects.raw('''
+    SELECT website_producttype.name, website_product.title, website_product.id 
+    FROM website_product 
+    JOIN website_producttype ON website_product.productType_id = website_producttype.id 
+    WHERE website_producttype.name = "Furniture" 
+    ORDER BY website_product.id DESC LIMIT 3''')
+
+    furniture_total = ProductType.objects.raw('''
+    SELECT COUNT(website_product.id) as total_furniture, website_product.id
+    FROM website_product 
+    JOIN website_producttype ON website_product.productType_id = website_producttype.id 
+    WHERE website_producttype.name = "Furniture"''')[0]
+
+    cars = ProductType.objects.raw('''
+    SELECT website_producttype.name, website_product.title, website_product.id 
+    FROM website_product 
+    JOIN website_producttype ON website_product.productType_id = website_producttype.id 
+    WHERE website_producttype.name = "Cars" 
+    ORDER BY website_product.id DESC LIMIT 3''')
+
+    cars_total = ProductType.objects.raw('''
+    SELECT COUNT(website_product.id) as total_cars, website_product.id
+    FROM website_product 
+    JOIN website_producttype ON website_product.productType_id = website_producttype.id 
+    WHERE website_producttype.name = "Cars"''')[0]
+
+    misc = ProductType.objects.raw('''
+    SELECT website_producttype.name, website_product.title, website_product.id 
+    FROM website_product 
+    JOIN website_producttype ON website_product.productType_id = website_producttype.id 
+    WHERE website_producttype.name = "Misc" 
+    ORDER BY website_product.id DESC LIMIT 3''')
+
+    misc_total = ProductType.objects.raw('''
+    SELECT COUNT(website_product.id) as total_misc, website_product.id
+    FROM website_product 
+    JOIN website_producttype ON website_product.productType_id = website_producttype.id 
+    WHERE website_producttype.name = "Misc"''')[0]
+
+    jewelry = ProductType.objects.raw('''
+    SELECT website_producttype.name, website_product.title, website_product.id 
+    FROM website_product 
+    JOIN website_producttype ON website_product.productType_id = website_producttype.id 
+    WHERE website_producttype.name = "Jewelry" 
+    ORDER BY website_product.id DESC LIMIT 3''')
+
+    jewelry_total = ProductType.objects.raw('''
+    SELECT COUNT(website_product.id) as total_jewelry, website_product.id
+    FROM website_product 
+    JOIN website_producttype ON website_product.productType_id = website_producttype.id 
+    WHERE website_producttype.name = "Jewelry"''')[0]
+
+    books = ProductType.objects.raw('''
+    SELECT website_producttype.name, website_product.title, website_product.id 
+    FROM website_product 
+    JOIN website_producttype ON website_product.productType_id = website_producttype.id 
+    WHERE website_producttype.name = "Books" 
+    ORDER BY website_product.id DESC LIMIT 3''')
+
+    books_total = ProductType.objects.raw('''
+    SELECT COUNT(website_product.id) as total_books, website_product.id
+    FROM website_product 
+    JOIN website_producttype ON website_product.productType_id = website_producttype.id 
+    WHERE website_producttype.name = "Books"''')[0]
+
+    context = {'electronics': electronics, 'computers': computers, 'jewelry': jewelry, 'books': books, 'misc': misc, 'cars': cars, 'furniture': furniture,
+    'computers_total': computers_total, 'books_total': books_total, 'jewelry_total': jewelry_total, 'misc_total': misc_total, 'electronics_total': electronics_total, 'cars_total': cars_total, 'furniture_total': furniture_total}
+    template_name = 'product/product_cat.html'
+    return render(request, template_name, context)
+
 
 #ORM WAY
 # def product_detail(request, product_id):
