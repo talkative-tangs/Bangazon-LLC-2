@@ -163,93 +163,93 @@ def product_sell(request):
 def product_cat(request):
     electronics = ProductType.objects.raw('''
     SELECT website_producttype.name, website_product.title, website_product.id
-    FROM website_product 
-    JOIN website_producttype ON website_product.productType_id = website_producttype.id 
-    WHERE website_producttype.name = "Electronics" 
+    FROM website_product
+    JOIN website_producttype ON website_product.productType_id = website_producttype.id
+    WHERE website_producttype.name = "Electronics"
     ORDER BY website_product.id DESC LIMIT 3''')
 
     electronics_total = ProductType.objects.raw('''
     SELECT COUNT(website_product.id) as total_electronics, website_product.id
-    FROM website_product 
-    JOIN website_producttype ON website_product.productType_id = website_producttype.id 
+    FROM website_product
+    JOIN website_producttype ON website_product.productType_id = website_producttype.id
     WHERE website_producttype.name = "Electronics"''')[0]
 
     computers = ProductType.objects.raw('''
-    SELECT website_producttype.name, website_product.title, website_product.id 
-    FROM website_product 
-    JOIN website_producttype ON website_product.productType_id = website_producttype.id 
-    WHERE website_producttype.name = "Computers" 
+    SELECT website_producttype.name, website_product.title, website_product.id
+    FROM website_product
+    JOIN website_producttype ON website_product.productType_id = website_producttype.id
+    WHERE website_producttype.name = "Computers"
     ORDER BY website_product.id DESC LIMIT 3''')
 
     computers_total = ProductType.objects.raw('''
     SELECT COUNT(website_product.id) as total_computers, website_product.id
-    FROM website_product 
-    JOIN website_producttype ON website_product.productType_id = website_producttype.id 
+    FROM website_product
+    JOIN website_producttype ON website_product.productType_id = website_producttype.id
     WHERE website_producttype.name = "Computers"''')[0]
 
     furniture = ProductType.objects.raw('''
-    SELECT website_producttype.name, website_product.title, website_product.id 
-    FROM website_product 
-    JOIN website_producttype ON website_product.productType_id = website_producttype.id 
-    WHERE website_producttype.name = "Furniture" 
+    SELECT website_producttype.name, website_product.title, website_product.id
+    FROM website_product
+    JOIN website_producttype ON website_product.productType_id = website_producttype.id
+    WHERE website_producttype.name = "Furniture"
     ORDER BY website_product.id DESC LIMIT 3''')
 
     furniture_total = ProductType.objects.raw('''
     SELECT COUNT(website_product.id) as total_furniture, website_product.id
-    FROM website_product 
-    JOIN website_producttype ON website_product.productType_id = website_producttype.id 
+    FROM website_product
+    JOIN website_producttype ON website_product.productType_id = website_producttype.id
     WHERE website_producttype.name = "Furniture"''')[0]
 
     cars = ProductType.objects.raw('''
-    SELECT website_producttype.name, website_product.title, website_product.id 
-    FROM website_product 
-    JOIN website_producttype ON website_product.productType_id = website_producttype.id 
-    WHERE website_producttype.name = "Cars" 
+    SELECT website_producttype.name, website_product.title, website_product.id
+    FROM website_product
+    JOIN website_producttype ON website_product.productType_id = website_producttype.id
+    WHERE website_producttype.name = "Cars"
     ORDER BY website_product.id DESC LIMIT 3''')
 
     cars_total = ProductType.objects.raw('''
     SELECT COUNT(website_product.id) as total_cars, website_product.id
-    FROM website_product 
-    JOIN website_producttype ON website_product.productType_id = website_producttype.id 
+    FROM website_product
+    JOIN website_producttype ON website_product.productType_id = website_producttype.id
     WHERE website_producttype.name = "Cars"''')[0]
 
     misc = ProductType.objects.raw('''
-    SELECT website_producttype.name, website_product.title, website_product.id 
-    FROM website_product 
-    JOIN website_producttype ON website_product.productType_id = website_producttype.id 
-    WHERE website_producttype.name = "Misc" 
+    SELECT website_producttype.name, website_product.title, website_product.id
+    FROM website_product
+    JOIN website_producttype ON website_product.productType_id = website_producttype.id
+    WHERE website_producttype.name = "Misc"
     ORDER BY website_product.id DESC LIMIT 3''')
 
     misc_total = ProductType.objects.raw('''
     SELECT COUNT(website_product.id) as total_misc, website_product.id
-    FROM website_product 
-    JOIN website_producttype ON website_product.productType_id = website_producttype.id 
+    FROM website_product
+    JOIN website_producttype ON website_product.productType_id = website_producttype.id
     WHERE website_producttype.name = "Misc"''')[0]
 
     jewelry = ProductType.objects.raw('''
-    SELECT website_producttype.name, website_product.title, website_product.id 
-    FROM website_product 
-    JOIN website_producttype ON website_product.productType_id = website_producttype.id 
-    WHERE website_producttype.name = "Jewelry" 
+    SELECT website_producttype.name, website_product.title, website_product.id
+    FROM website_product
+    JOIN website_producttype ON website_product.productType_id = website_producttype.id
+    WHERE website_producttype.name = "Jewelry"
     ORDER BY website_product.id DESC LIMIT 3''')
 
     jewelry_total = ProductType.objects.raw('''
     SELECT COUNT(website_product.id) as total_jewelry, website_product.id
-    FROM website_product 
-    JOIN website_producttype ON website_product.productType_id = website_producttype.id 
+    FROM website_product
+    JOIN website_producttype ON website_product.productType_id = website_producttype.id
     WHERE website_producttype.name = "Jewelry"''')[0]
 
     books = ProductType.objects.raw('''
-    SELECT website_producttype.name, website_product.title, website_product.id 
-    FROM website_product 
-    JOIN website_producttype ON website_product.productType_id = website_producttype.id 
-    WHERE website_producttype.name = "Books" 
+    SELECT website_producttype.name, website_product.title, website_product.id
+    FROM website_product
+    JOIN website_producttype ON website_product.productType_id = website_producttype.id
+    WHERE website_producttype.name = "Books"
     ORDER BY website_product.id DESC LIMIT 3''')
 
     books_total = ProductType.objects.raw('''
     SELECT COUNT(website_product.id) as total_books, website_product.id
-    FROM website_product 
-    JOIN website_producttype ON website_product.productType_id = website_producttype.id 
+    FROM website_product
+    JOIN website_producttype ON website_product.productType_id = website_producttype.id
     WHERE website_producttype.name = "Books"''')[0]
 
     context = {'electronics': electronics, 'computers': computers, 'jewelry': jewelry, 'books': books, 'misc': misc, 'cars': cars, 'furniture': furniture,
@@ -294,12 +294,13 @@ def my_account(request, user_id):
 def my_account_payment(request, user_id):
     '''user account page with payment details'''
 
+    currentuser = request.user
     template_name = 'my_account/my_account_payment.html'
     user = User.objects.get(id=user_id)
     sql = '''SELECT id, name, buyer_id, substr(accountNum, -4, 4) as four
             FROM website_paymenttype
              WHERE buyer_id = %s and deletedDate isnull'''
-    payments = PaymentType.objects.raw(sql, [user_id])
+    payments = PaymentType.objects.raw(sql, [currentuser.customer.id])
     context = {
         'user': user,
         'payments': payments,
@@ -312,6 +313,8 @@ def my_account_payment_add(request, user_id):
     '''add payment type for user'''
     template_name = 'my_account/my_account_payment_add.html'
     user = User.objects.get(id=user_id)
+    currentuser = request.user
+
 
     if request.method == "GET":
             #No data submitted, create a blank form
@@ -324,7 +327,7 @@ def my_account_payment_add(request, user_id):
             if payment_type_check:
                 error = True
                 return render(request, template_name, {'error':error})
-            new_payment_type = cursor.execute("INSERT INTO website_paymenttype VALUES (%s, %s, %s, %s, %s)", [None, req["name"], req["accountNum"], None, user_id])
+            new_payment_type = cursor.execute("INSERT INTO website_paymenttype VALUES (%s, %s, %s, %s, %s)", [None, req["name"], req["accountNum"], None, currentuser.customer.id])
 
         return HttpResponseRedirect(reverse('website:my_account_payment', args=(user_id,)))
 
@@ -436,6 +439,11 @@ def search_results(request):
         results = []
     return render(request, template_name, {'results': results, 'query': query})
 
+
+# ===================================================
+# Order Begin
+# ===================================================
+
 @login_required
 def order_product(request, product_id):
     ''' first checks if user has any open orders '''
@@ -506,14 +514,24 @@ def order_product_to_delete(request, order_product_to_delete):
 def order_payment(request, order_id):
     '''adds payment type and completes order'''
 
-    user = request.user
+    currentuser = request.user
     sql = '''SELECT *
       FROM website_productorder
       WHERE order_id = %s'''
     orders = ProductOrder.objects.raw(sql, [order_id])
 
+    print("customer_id", currentuser.customer.id)
+
+    user_payments_sql = '''SELECT website_paymenttype.id, website_paymenttype.name
+        FROM website_paymenttype
+        JOIN website_customer ON website_paymenttype.buyer_id = website_customer.id
+        WHERE website_paymenttype.buyer_id = %s AND website_paymenttype.deletedDate IS NULL'''
+
+    payment_types = PaymentType.objects.raw(user_payments_sql, [currentuser.customer.id])
+    print("PAYMENTTYPES:", payment_types)
+
     template_name = 'order/order_payment.html'
-    context = {'user': user, 'orders': orders}
+    context = {'currentuser': currentuser, 'orders': orders, 'payment_types': payment_types }
     return render(request, template_name, context)
 
 
