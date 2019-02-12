@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Order Detail</h1>
+<p>{{ user.first_name }}'s Cart</p>
+<table>
+  <tr>
+    <td><strong>Product</strong></td>
+    <td><strong>Price</strong></td>
+    <td></td>
+  </tr>
+  <!-- logic will go here to repeat table rows per product ordered -->
+  {% if orders %}
+    {% for order in orders %}
+  <tr>
+    <td>{{ order.product.title }}</td>
+    <td>{{ order.product.price }}</td>
+    <td><button>delete</button></td>
+  </tr>
+    {% endfor%}
+  {% endif %}
+</table>
+
+<form>
+    {% csrf_token %}
+    <select>
+      <option>1</option>
+    </select>
+    <button>
+      Done
+    </button>
+</form>
+
+
+{% endblock content %}

@@ -77,7 +77,7 @@ class Order(models.Model):
         on_delete=models.CASCADE,
       )
       paymentType = models.ForeignKey(
-        PaymentType,
+        PaymentType, default=None, blank=True, null=True,
         on_delete=models.PROTECT
       )
       product = models.ManyToManyField(Product, through='ProductOrder')
