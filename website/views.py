@@ -334,10 +334,10 @@ def my_account_payment_add(request, user_id):
 @login_required
 def my_account_order_history(request, user_id):
     '''view order history of current user'''
-
+    buyer_id = request.user
     try:
         sql = '''SELECT * FROM website_order WHERE buyer_id = %s and paymentType_id IS NOT NULL'''
-        orders = Order.objects.raw(sql, [user_id])
+        orders = Order.objects.raw(sql, [buyer_id.customer.id])
     except Order.DoesNotExist:
         raise Http404("No orders exist")
 
@@ -443,14 +443,14 @@ def search_results(request):
 def order_product(request, product_id):
     ''' first checks if user has any open orders '''
     # once logged in, query orders by user
-    user = request.user
+    currentuser = request.user
     sql = '''SELECT *
           FROM website_order
           WHERE buyer_id = %s
           AND paymentType_id IS NULL'''
 
     try:
-        open_order = Order.objects.raw(sql, [user.id])[0]
+        open_order = Order.objects.raw(sql, [currentuser.customer.id])[0]
     except IndexError:
         open_order = None
 
@@ -462,7 +462,7 @@ def order_product(request, product_id):
 
     else:
       with connection.cursor() as cursor:
-          cursor.execute("INSERT into website_order VALUES (%s, %s, %s, %s)", [ None, None, user.id, None ])
+          cursor.execute("INSERT into website_order VALUES (%s, %s, %s, %s)", [ None, None, currentuser.customer.id, None ])
           sql = ''' SELECT * FROM website_order ORDER BY id DESC LIMIT 1'''
           new_order = Order.objects.raw(sql,)[0]
 
