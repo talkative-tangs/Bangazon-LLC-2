@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>Order Detail</h1>
+<p>{{ user.first_name }}'s Cart</p>
+<table>
+  <tr>
+    <td><strong>Product</strong></td>
+    <td><strong>Price</strong></td>
+    <td></td>
+  </tr>
+  <!-- logic will go here to repeat table rows per product ordered -->
+  {% if orders %}
+    {% for order in orders %}
+  <tr>
+    <td>{{ order.product.title }}</td>
+    <td>{{ order.product.price }}</td>
+    <td>
+        <form action="{% url 'website:order_product_to_delete' order_product_to_delete=order.id %}" method='POST'>
+            {% csrf_token %}
+            <button>delete</button>
+        </form>
+    </td>
+  </tr>
+    {% endfor%}
+  {% endif %}
+</table>
+
+<form action="{% url 'website:order_payment' order_id=current_order_id %}" method='POST'>
+{% csrf_token %}
+  <button>
+    Complete Order
+  </button>
+</form>
+
+  <form action="{% url 'website:order_cancel' order_id=current_order_id %}" method='POST'>
+      {% csrf_token %}
+    <button>
+      Cancel Order
+    </button>
+  </form>
+
+{% endblock content %}
