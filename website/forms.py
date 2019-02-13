@@ -10,6 +10,8 @@ class UserForm(forms.ModelForm):
         fields = ('username', 'email', 'password', 'first_name', 'last_name',)
 
 class ProductForm(forms.ModelForm):
+    quantity = forms.DecimalField(min_value=1)
+    price = forms.DecimalField(min_value=0.01, max_value=10000)
 
     class Meta:
         model = Product
