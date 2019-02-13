@@ -532,3 +532,9 @@ def order_success(request, order_id):
 
       template_name = 'order/order_success.html'
       return render (request, template_name)
+
+def product_books(request):
+    books = Product.objects.filter(productType_id=4)
+    template_name = 'product/product_books.html'
+    context = {}
+    return render(request, template_name, {'books': books})

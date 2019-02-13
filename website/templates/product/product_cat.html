@@ -21,7 +21,7 @@
       <li><a href="{% url 'website:product_detail' item.id %}">{{ item.title }}</a></li>
     </ul>
     {% endfor %}
-    <h3>Books ({{ books_total.total_books }})</h3>
+    <h3><a href="{% url 'website:product_books' %}">Books</a> ({{ books_total.total_books }})</h3>
     {% for item in books %}
     <ul style="list-style-type:none">
       <li><a href="{% url 'website:product_detail' item.id %}">{{ item.title }}</a></li>

@@ -14,6 +14,7 @@ urlpatterns = [
     path('product_sell/', views.product_sell, name='product_sell'),
     path('product_cat/', views.product_cat, name='product_cat'),
     path('product_detail/<int:product_id>/', views.product_detail, name='product_detail'),
+    path('product_books', views.product_books, name='product_books'),
     # End Products -----------
 
 
