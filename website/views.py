@@ -516,13 +516,14 @@ def order_detail(request, order_id):
 def order_cancel(request, order_id):
     ''' allows user to cancel order - product orders deleted from join table first before deleting order'''
 
+    template_name = 'order/order_cancel_msg.html'
     if request.method == 'POST':
       with connection.cursor() as cursor:
 
           cursor.execute("DELETE FROM website_productorder WHERE order_id = %s", [order_id])
           cursor.execute("DELETE FROM website_order WHERE id = %s", [order_id])
 
-    return HttpResponseRedirect(reverse('website:index'))
+    return render(request, template_name)
 
 
 def order_product_to_delete(request, order_product_to_delete):
