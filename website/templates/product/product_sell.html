@@ -5,7 +5,6 @@
 
     <h1>Sell Product</h1>
 
-
     <form action="{% url 'website:product_sell' %}" method="post">
       {% csrf_token %}
       {{ product_form.as_p }}
@@ -13,6 +12,6 @@
     </form>
 
 {% endblock content %}
-  
- 
+
+
 
