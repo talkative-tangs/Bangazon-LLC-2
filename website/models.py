@@ -1,6 +1,8 @@
 from django.contrib.auth.models import User
 from django.db import models
 from datetime import datetime, date
+from django.core.validators import MaxValueValidator, MinValueValidator
+from decimal import Decimal
 
 
 # Create your models here.
@@ -40,7 +42,7 @@ class Product(models.Model):
     )
     title = models.CharField(max_length=100, blank=False)
     description = models.TextField(blank=False, null=True)
-    price = models.DecimalField(max_digits=7, decimal_places=2, blank=False)
+    price = models.DecimalField(max_digits=7, decimal_places=2, blank=False, validators=[MinValueValidator(Decimal('0.01')), MaxValueValidator(Decimal('10000.00'))])
     quantity = models.IntegerField(blank=False)
     productType = models.ForeignKey(
     ProductType,

@@ -148,7 +148,7 @@ def product_sell(request):
                 #
                 return HttpResponseRedirect(reverse('website:product_detail', args=(product_id,)))
         else:
-            raise ValidationError(_('Invalid value: %s'))
+            raise ValidationError(('Invalid value: %s'))
 
 
 # def product_cat(request):
