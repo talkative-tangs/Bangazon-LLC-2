@@ -10,7 +10,7 @@
 
     <ul>
     {% for product in products %}
-      <li>{{ product.title }} - ${{ product.price }}</li>
+      <li>{{ product.title }} - ${{ product.price|floatformat:2|intcomma }}</li>
     {% endfor %}
     </ul>
 

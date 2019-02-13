@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load humanize %}
 
 {% block content %}
 
@@ -9,7 +10,7 @@
 {% else %}
 <p>Quantity Available: {{ product.get_remaining_quantity }}</p>
 {% endif %}
-<p>Price Per Unit: ${{ product.price }}</p>
+<p>Price Per Unit: ${{ product.price|floatformat:2|intcomma }}</p>
 
 {% if product.get_remaining_quantity > 0 %}
 <form id="order_product" method="post" action="{% url 'website:order_product' product.id %}">

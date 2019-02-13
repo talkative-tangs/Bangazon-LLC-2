@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load humanize %}
 
 {% load staticfiles %}
 {% block content %}
@@ -12,7 +13,7 @@
         {% else %}
         <li>Quantity: {{ item.get_remaining_quantity }}</li>
         {% endif %}
-        <li>Price: ${{ item.price }}</li>
+        <li>Price: ${{ item.price|floatformat:2|intcomma }}</li>
         <br/>
     {% endfor %}
 </ul>
