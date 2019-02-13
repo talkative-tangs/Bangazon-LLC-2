@@ -474,6 +474,19 @@ def order_product(request, product_id):
           cursor.execute("INSERT into website_productorder VALUES (%s, %s, %s)", [ None, new_order.id, product_id])
           return HttpResponseRedirect(reverse('website:order_detail', args=(new_order.id,)))
 
+@login_required
+def shopping_cart(request, order_id):
+    currentuser = request.user
+    sql = '''SELECT *
+            FROM website_order
+            WHERE buyer_id = %s
+            AND paymentType_id IS NULL'''
+
+    try:
+        open_order = Order.objects.raw(sql, [currentuser.customer.id])[0]
+    except IndexError:
+        open_order = None
+
 
 def order_detail(request, order_id):
     '''order detail acts like a shopping cart for the user'''
