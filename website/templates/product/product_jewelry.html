@@ -7,7 +7,11 @@
 <ul style="list-style-type:none">
     {% for item in jewelry %}
         <li><a href="{% url 'website:product_detail' item.id %}">{{ item.title }}</a></li>
+        {% if item.get_remaining_quantity <= 0 %}
+        <li>Quantity: Out of Stock</li>
+        {% else %}
         <li>Quantity: {{ item.get_remaining_quantity }}</li>
+        {% endif %}
         <li>Price: ${{ item.price }}</li>
         <br/>
     {% endfor %}
