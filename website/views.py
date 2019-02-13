@@ -76,7 +76,8 @@ def login_user(request):
     '''
 
     # Obtain the context for the user's request.
-    context = RequestContext(request)
+    context = {'next': request.GET.get('next', '/')}
+    print("CONTEXT:", context)
 
     # If the request is a HTTP POST, try to pull out the relevant information.
     if request.method == 'POST':
@@ -89,7 +90,11 @@ def login_user(request):
         # If authentication was successful, log the user in
         if authenticated_user is not None:
             login(request=request, user=authenticated_user)
-            return HttpResponseRedirect('/')
+            if request.POST.get('next') == '/':
+              return HttpResponseRedirect('/')
+            else:
+              print("ELSE STATEMENT:", request.POST.get('next', '/'))
+              return HttpResponseRedirect(request.POST.get('next', '/'))
 
         else:
             # Bad login details were provided. So we can't log the user in.
@@ -97,7 +102,7 @@ def login_user(request):
             return HttpResponse("Invalid login details supplied.")
 
 
-    return render(request, 'login.html', {}, context)
+    return render(request, 'login.html', context)
 
 # Use the login_required() decorator to ensure only those logged in can access the view.
 @login_required
@@ -496,11 +501,19 @@ def order_cancel(request, order_id):
 
 def order_product_to_delete(request, order_product_to_delete):
     ''' allows user to delete product from order '''
+
+    sql='''SELECT * FROM website_productorder p 
+    WHERE p.id = %s
+    '''
+    product_order_id = ProductOrder.objects.raw(sql, [order_product_to_delete])[0]
+    print("PRODUCT ORDER ID:", product_order_id)
+    print("ORDER ID:", product_order_id.order_id)
+
     if request.method == 'POST':
       with connection.cursor() as cursor:
           cursor.execute("DELETE FROM website_productorder WHERE id = %s", [order_product_to_delete])
 
-    return HttpResponseRedirect(reverse('website:index'))
+    return HttpResponseRedirect(reverse('website:order_detail', args=(product_order_id.order_id,)))
 
 
 def order_payment(request, order_id):
