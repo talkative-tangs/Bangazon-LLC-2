@@ -7,7 +7,7 @@
 <ul style="list-style-type:none">
     {% for item in jewelry %}
         <li><a href="{% url 'website:product_detail' item.id %}">{{ item.title }}</a></li>
-        <li>Quantity: {{ item.quantity }}</li>
+        <li>Quantity: {{ item.get_remaining_quantity }}</li>
         <li>Price: ${{ item.price }}</li>
         <br/>
     {% endfor %}

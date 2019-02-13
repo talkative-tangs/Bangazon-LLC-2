@@ -7,7 +7,7 @@
 <ul style="list-style-type:none">
     {% for book in books %}
         <li><a href="{% url 'website:product_detail' book.id %}">{{ book.title }}</a></li>
-        <li>Quantity: {{ book.quantity }}</li>
+        <li>Quantity: {{ book.get_remaining_quantity }}</li>
         <li>Price: ${{ book.price }}</li>
         <br/>
     {% endfor %}
