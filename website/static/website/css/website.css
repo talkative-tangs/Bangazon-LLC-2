@@ -1,0 +1,53 @@
+.nav1 {
+  padding: 10px;
+  background: rgb(14, 168, 0);
+}
+
+.nav1 a {
+  color: white;
+  font-weight: bold;
+  margin-right: 5px;
+}
+.nav1 a:hover {
+  text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.8);
+  text-decoration: none;
+}
+
+.nav2 {
+  padding: 10px;
+  background: rgb(168, 0, 0);
+}
+
+.nav2 a {
+  color: white;
+  font-weight: bold;
+  margin-right: 5px;
+}
+
+.nav2 a:hover {
+  text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.8);
+  text-decoration: none;
+}
+
+div {
+  padding: 10px;
+}
+.logo {
+  font-size: 2em;
+  font-weight: bolder;
+  color: white;
+  margin-right: 10px;
+}
+
+.logo:hover {
+  color:white;
+  text-decoration: none;
+  text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.8)
+}
+
+
+
+.search {
+  font-size: 1em;
+  margin: 2px 5px 0px 10px;
+}

@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,7 +6,9 @@
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
         <meta name="viewport" content="width=device-width, initial-scale=1">
-
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
+        <link rel="stylesheet" href="{% static 'website/css/website.css' %}">
         <!-- <title>Bangazon LLC Admin Suite</title> -->
     </head>
 
@@ -13,32 +16,31 @@
 
         {% block nav %}
         {% if user.is_authenticated %}
-        <div id="navigation">
-            <a href="{% url 'website:index' %}">Bangazon</a>
+        <nav id="navigation" class="nav1">
+            <a href="{% url 'website:index' %}" class="logo">Bangazon!</a>
             <a href="{% url 'website:product_cat' %}">Product Categories</a>
             <a href="{% url 'website:product_sell' %}">Sell Product</a>
             <a href="{% url 'website:my_account' user.id %}">My Account</a>
             <a href="{% url 'website:logout' %}">Log Out</a>
-            <br/>
-            <br/>
-            <form method="get" action="/search_results/">
-                <input type="text" id="searchBox" class="input-medium search-query" name="q" placeholder="Search for a Product" required>
-                <input type="submit" class="btn" value="Search" >
-            </form>
-        </div>
+        </nav>
+        <form method="get" action="/search_results/" class="search">
+          <input type="text" id="searchBox" class="search" name="q" placeholder="Search for a Product" required>
+          <input type="submit" class="search" value="Search" >
+      </form>
         {% else %}
-        <div id="navigation">
-            <a href="{% url 'website:index' %}">Bangazon</a>
+        <nav id="navigation" class="nav2">
+            <a href="{% url 'website:index' %}" class="logo">Bangazon!</a>
             <a href="{% url 'website:product_cat' %}">Product Categories</a>
             <a href="{% url 'website:login' %}">My Account</a>
             <a href="{% url 'website:register' %}">Register</a>
             <a href="{% url 'website:login' %}">Login</a>
-        </div>
+        </nav>
         {% endif %}
         {% endblock nav %}
 
-
+      <div>
         {% block content %}{% endblock content %}
+      </div>
 
     </body>
 
