@@ -96,6 +96,7 @@ class Order(models.Model):
     PaymentType, default=None, blank=True, null=True,
     on_delete=models.PROTECT
     )
+
     product = models.ManyToManyField(Product, through='ProductOrder')
     deletedDate = models.DateField(default=None, blank=True, null=True)
 
