@@ -148,7 +148,7 @@ def product_sell(request):
                 #
                 return HttpResponseRedirect(reverse('website:product_detail', args=(product_id,)))
         else:
-            raise forms.ValidationError('Cannot enter value below 0 or over 10,000')
+            raise ValidationError(_('Invalid value: %s'))
 
 
 # def product_cat(request):
@@ -474,6 +474,29 @@ def order_product(request, product_id):
           cursor.execute("INSERT into website_productorder VALUES (%s, %s, %s)", [ None, new_order.id, product_id])
           return HttpResponseRedirect(reverse('website:order_detail', args=(new_order.id,)))
 
+@login_required
+def shopping_cart(request):
+    ''' first checks if user has any open orders '''
+    # once logged in, query orders by user
+    currentuser = request.user
+    sql = '''SELECT *
+          FROM website_order
+          WHERE buyer_id = %s
+          AND paymentType_id IS NULL'''
+
+    try:
+        open_order = Order.objects.raw(sql, [currentuser.customer.id])[0]
+    except IndexError:
+        open_order = None
+
+    if open_order is not None:
+        return HttpResponseRedirect(reverse('website:order_detail', args=(open_order,)))
+
+    else:
+        sql = ''' SELECT * FROM website_order ORDER BY id DESC LIMIT 1'''
+        new_order = Order.objects.raw(sql,)[0]
+        template_name = 'order/shopping_cart.html'
+        return render(request, template_name)
 
 def order_detail(request, order_id):
     '''order detail acts like a shopping cart for the user'''
