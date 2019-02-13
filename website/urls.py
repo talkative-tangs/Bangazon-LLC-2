@@ -31,6 +31,7 @@ urlpatterns = [
     path('order_cancel/<int:order_id>', views.order_cancel, name='order_cancel'),
     path('order_product_to_delete/<int:order_product_to_delete>', views.order_product_to_delete, name='order_product_to_delete'),
     path('order_success/<int:order_id>', views.order_success, name='order_success'),
+    path('shopping_cart/', views.shopping_cart, name='shopping_cart'),
     # End Order --------------
 
     # My Account ---------
