@@ -171,9 +171,11 @@ Functionality that enables the user to search Bangazon using keywords.  Once a u
 
 This repo created by the Talkative Tangs of Cohort 28:
 
-[Bryan Nilsen](https://github.com/BryanNilsen): Training Programs Module - Team Lead
 
 [Lesley Boyd](https://github.com/laboyd001): Computers Module
+
+[Bryan Nilsen](https://github.com/BryanNilsen): Training Programs Module - Team Lead
+
 
 [Ousama Elayan](https://github.com/ousamasama/): Departments Module
 
