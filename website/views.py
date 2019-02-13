@@ -501,11 +501,19 @@ def order_cancel(request, order_id):
 
 def order_product_to_delete(request, order_product_to_delete):
     ''' allows user to delete product from order '''
+
+    sql='''SELECT * FROM website_productorder p 
+    WHERE p.id = %s
+    '''
+    product_order_id = ProductOrder.objects.raw(sql, [order_product_to_delete])[0]
+    print("PRODUCT ORDER ID:", product_order_id)
+    print("ORDER ID:", product_order_id.order_id)
+
     if request.method == 'POST':
       with connection.cursor() as cursor:
           cursor.execute("DELETE FROM website_productorder WHERE id = %s", [order_product_to_delete])
 
-    return HttpResponseRedirect(reverse('website:index'))
+    return HttpResponseRedirect(reverse('website:order_detail', args=(product_order_id.order_id,)))
 
 
 def order_payment(request, order_id):
