@@ -5,9 +5,9 @@ from . import views
 app_name = "website"
 urlpatterns = [
     path('', views.index, name='index'),
-    path('login/', views.login_user, name='login'),
-    path('logout/', views.user_logout, name='logout'),
-    path('register/', views.register, name='register'),
+    path('login', views.login_user, name='login'),
+    path('logout', views.user_logout, name='logout'),
+    path('register', views.register, name='register'),
 
     # Products -----------
     path('search_results/', views.search_results, name='search_results'),
