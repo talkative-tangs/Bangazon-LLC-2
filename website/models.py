@@ -48,13 +48,14 @@ class Product(models.Model):
     )
     deletedDate = models.DateField(default=None, blank=True, null=True)
 
-    def get_remaining_quantity(self, product_id):
+    @property
+    def get_remaining_quantity(self):
         # Checks website_product_order for instances of product. If they exist, it calculates how many remain.
         remaining_quantity = Product.objects.raw('''
-        SELECT p.id, p.quantity, SUM(p.quantity) - COUNT(wpo.product_id) as remaining
+        SELECT p.id, p.quantity, (p.quantity - COUNT(wpo.product_id)) as remaining
         FROM website_product as p
         LEFT JOIN website_productorder as wpo ON wpo.product_id = p.id
-        WHERE p.id = %s''', [product_id])[0]
+        WHERE p.id = %s''', [self.id])[0]
 
         if remaining_quantity is None:
             remaining_quantity = remaining_quantity.quantity
