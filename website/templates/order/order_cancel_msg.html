@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% block content %}
+    <h2>Order Cancelled</h2>
+    <p>Feel free to keep shopping!</p>
+
+    <a href="{% url 'website:index' %}">View Products</a>
+  </body>
+{% endblock content %}
