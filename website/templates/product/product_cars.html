@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% block content %}
+
+<h3>Cars</h3>
+<ul style="list-style-type:none">
+    {% for car in cars %}
+        <li><a href="{% url 'website:product_detail' car.id %}">{{ car.title }}</a></li>
+        <li>Quantity: {{ car.quantity }}</li>
+        <li>Price: ${{ car.price }}</li>
+        <br/>
+    {% endfor %}
+</ul>
+
+{% endblock content %}

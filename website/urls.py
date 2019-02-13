@@ -15,6 +15,12 @@ urlpatterns = [
     path('product_cat/', views.product_cat, name='product_cat'),
     path('product_detail/<int:product_id>/', views.product_detail, name='product_detail'),
     path('product_books', views.product_books, name='product_books'),
+    path('product_furniture', views.product_furniture, name='product_furniture'),
+    path('product_misc', views.product_misc, name='product_misc'),
+    path('product_jewelry', views.product_jewelry, name='product_jewelry'),
+    path('product_cars', views.product_cars, name='product_cars'),
+    path('product_electronics', views.product_electronics, name='product_electronics'),
+    path('product_computers', views.product_computers, name='product_computers'),
     # End Products -----------
 
 

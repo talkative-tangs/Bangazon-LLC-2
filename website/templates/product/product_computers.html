@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% block content %}
+
+<h3>Computers</h3>
+<ul style="list-style-type:none">
+    {% for computer in computers %}
+        <li><a href="{% url 'website:product_detail' computer.id %}">{{ computer.title }}</a></li>
+        <li>Quantity: {{ computer.quantity }}</li>
+        <li>Price: ${{ computer.price }}</li>
+        <br/>
+    {% endfor %}
+</ul>
+
+{% endblock content %}

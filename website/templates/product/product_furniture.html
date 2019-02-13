@@ -3,9 +3,9 @@
 {% load staticfiles %}
 {% block content %}
 
-<h3>Jewelry</h3>
+<h3>Furniture</h3>
 <ul style="list-style-type:none">
-    {% for item in jewelry %}
+    {% for item in furniture %}
         <li><a href="{% url 'website:product_detail' item.id %}">{{ item.title }}</a></li>
         <li>Quantity: {{ item.quantity }}</li>
         <li>Price: ${{ item.price }}</li>
