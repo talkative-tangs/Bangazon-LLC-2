@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% block content %}
+
+<h3>Cars</h3>
+<ul style="list-style-type:none">
+    {% for car in cars %}
+        <li><a href="{% url 'website:product_detail' car.id %}">{{ car.title }}</a></li>
+        {% if car.get_remaining_quantity <= 0 %}
+        <li>Quantity: Out of Stock</li>
+        {% else %}
+        <li>Quantity: {{ car.get_remaining_quantity }}</li>
+        {% endif %}
+        <li>Price: ${{ car.price }}</li>
+        <br/>
+    {% endfor %}
+</ul>
+
+{% endblock content %}

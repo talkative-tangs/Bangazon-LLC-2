@@ -276,7 +276,7 @@ def product_detail(request, product_id):
         raise Http404("Product does not exist")
 
     template_name = 'product/product_detail.html'
-    return render(request, template_name, {'product': product})
+    return render(request, template_name, {'product': product })
 
 # ===================================================
 # My Account Begin
@@ -545,3 +545,38 @@ def order_success(request, order_id):
 
       template_name = 'order/order_success.html'
       return render (request, template_name)
+
+def product_books(request):
+    books = Product.objects.filter(productType_id=4)
+    template_name = 'product/product_books.html'
+    return render(request, template_name, {'books': books})
+
+def product_cars(request):
+    cars = Product.objects.filter(productType_id=3)
+    template_name = 'product/product_cars.html'
+    return render(request, template_name, {'cars': cars})
+
+def product_misc(request):
+    misc = Product.objects.filter(productType_id=7)
+    template_name = 'product/product_misc.html'
+    return render(request, template_name, {'misc': misc})
+
+def product_jewelry(request):
+    jewelry = Product.objects.filter(productType_id=6)
+    template_name = 'product/product_jewelry.html'
+    return render(request, template_name, {'jewelry': jewelry})
+
+def product_electronics(request):
+    electronics = Product.objects.filter(productType_id=1)
+    template_name = 'product/product_electronics.html'
+    return render(request, template_name, {'electronics': electronics})
+
+def product_furniture(request):
+    furniture = Product.objects.filter(productType_id=2)
+    template_name = 'product/product_furniture.html'
+    return render(request, template_name, {'furniture': furniture})
+
+def product_computers(request):
+    computers = Product.objects.filter(productType_id=5)
+    template_name = 'product/product_computers.html'
+    return render(request, template_name, {'computers': computers})

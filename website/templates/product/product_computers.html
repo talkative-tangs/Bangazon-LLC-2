@@ -1,0 +1,20 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% block content %}
+
+<h3>Computers</h3>
+<ul style="list-style-type:none">
+    {% for computer in computers %}
+        <li><a href="{% url 'website:product_detail' computer.id %}">{{ computer.title }}</a></li>
+        {% if computer.get_remaining_quantity <= 0 %}
+        <li>Quantity: Out of Stock</li>
+        {% else %}
+        <li>Quantity: {{ computer.get_remaining_quantity }}</li>
+        {% endif %}
+        <li>Price: ${{ computer.price }}</li>
+        <br/>
+    {% endfor %}
+</ul>
+
+{% endblock content %}
