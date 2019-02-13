@@ -56,6 +56,11 @@ class Product(models.Model):
         LEFT JOIN website_productorder as wpo ON wpo.product_id = p.id
         WHERE p.id = %s''', [product_id])[0]
 
+        if remaining_quantity is None:
+            remaining_quantity = remaining_quantity.quantity
+        else:
+            remaining_quantity = remaining_quantity.remaining
+
         return remaining_quantity
 
     def __str__(self):
