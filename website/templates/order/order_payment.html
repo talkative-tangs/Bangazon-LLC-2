@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load humanize %}
 
 {% block content %}
 
@@ -15,7 +16,7 @@
     {% for order in orders %}
   <tr>
     <td>{{ order.product.title }}</td>
-    <td>{{ order.product.price }}</td>
+    <td>{{ order.product.price|floatformat:2|intcomma }}</td>
     <td></td>
   </tr>
     {% endfor%}
