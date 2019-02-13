@@ -276,7 +276,7 @@ def product_detail(request, product_id):
         raise Http404("Product does not exist")
 
     template_name = 'product/product_detail.html'
-    return render(request, template_name, {'product': product})
+    return render(request, template_name, {'product': product })
 
 # ===================================================
 # My Account Begin

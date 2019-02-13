@@ -4,13 +4,19 @@
 
 <h1>Name: {{ product.title }}</h1>
 <p>Description: {{ product.description }}</p>
-<p>Quantity Available: {{ product.quantity }}</p>
+{% if product.get_remaining_quantity <= 0 %}
+<p>Quantity Available: Product on back order</p>
+{% else %}
+<p>Quantity Available: {{ product.get_remaining_quantity }}</p>
+{% endif %}
 <p>Price Per Unit: ${{ product.price }}</p>
 
+{% if product.get_remaining_quantity > 0 %}
 <form id="order_product" method="post" action="{% url 'website:order_product' product.id %}">
 <form>
   {% csrf_token %}
   <button>Add to Order</button>
 </form>
+{% endif %}
 
 {% endblock content %}
