@@ -267,11 +267,17 @@ def product_detail(request, product_id):
     try:
         sql = '''SELECT id, seller_id FROM website_product WHERE id = %s'''
         product = Product.objects.raw(sql, [product_id])[0]
+        quantity = Product().get_remaining_quantity(product_id)
+        if quantity is None:
+            quantity = quantity.quantity
+        else:
+            quantity = quantity.remaining
+
     except Product.DoesNotExist:
         raise Http404("Product does not exist")
 
     template_name = 'product/product_detail.html'
-    return render(request, template_name, {'product': product})
+    return render(request, template_name, {'product': product, 'quantity': quantity})
 
 # ===================================================
 # My Account Begin
