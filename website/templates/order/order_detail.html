@@ -5,6 +5,8 @@
 
 <h1>Order Detail</h1>
 <p>{{ user.first_name }}'s Cart</p>
+
+{% if orders %}
 <table>
   <tr>
     <td><strong>Product</strong></td>
@@ -12,7 +14,6 @@
     <td></td>
   </tr>
   <!-- logic will go here to repeat table rows per product ordered -->
-  {% if orders %}
     {% for order in orders %}
   <tr>
     <td>{{ order.product.title }}</td>
@@ -24,8 +25,6 @@
         </form>
     </td>
   </tr>
-    {% endfor%}
-  {% endif %}
 </table>
 
 <form action="{% url 'website:order_payment' order_id=current_order_id %}" method='POST'>
@@ -35,11 +34,16 @@
   </button>
 </form>
 
-  <form action="{% url 'website:order_cancel' order_id=current_order_id %}" method='POST'>
+<form action="{% url 'website:order_cancel' order_id=current_order_id %}" method='POST'>
       {% csrf_token %}
     <button>
       Cancel Order
     </button>
-  </form>
+</form>
+  {% endfor%}
 
+  {% else %}
+
+  <h1>You don't have anything in your cart.</h1>
+  {% endif %}
 {% endblock content %}
