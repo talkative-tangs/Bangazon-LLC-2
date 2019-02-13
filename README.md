@@ -20,6 +20,12 @@ Using the requirements above create a [model](https://docs.djangoproject.com/en/
 
 Django has many built-in [helper tags and filters](https://docs.djangoproject.com/en/1.10/ref/templates/builtins/) when building the site templates. We strongly recommend reading this documentation while building your templates.
 
+This projects utilizes ModelForm
+
+```class ModelForm
+```
+If you’re building a database-driven app, chances are you’ll have forms that map closely to Django models. For instance, you might have a BlogComment model, and you want to create a form that lets people submit comments. In this case, it would be redundant to define the field types in your form, because you’ve already defined the fields in your model.
+
 
 # Core Technologies
 
@@ -123,15 +129,18 @@ Django is a Python Web framework. This project uses Django and requires Python t
 
 As of now, the database is going to be hosted on your local computer. There are a few things you need to make sure are in place before the database can be up and running.
 
-Fork and clone the repo on to you local machine. 
+1. Fork and clone the repo on to you local machine. 
 
-Run makemigrations
-`python manage.py makemigrations Website`
-Run migrate
+2. Run makemigrations
+`python manage.py makemigrations website`
+
+3. Run migrate
 `python manage.py migrate`
 >This will create all the migrations needed for Django Framework to post items to the database based on the models in the Models/ directory
-Create initial SQL data. Nagivate to the Bangazon-LLC directory and run:
-`sqlite3 db.sqlite < data.sql`
+
+4. Add initial data
+`python manage.py loaddata db.json`
+>This will create load data from the projects json file to your local database
 
 ## Run Server
 
@@ -150,13 +159,16 @@ Bangazon(Home Page), Product Categories, My Account, Register, and Login
 Once you login you will see a navigation bar as follows:
 Bangazon(Home Page), Product Categories, Sell Product, My Account, Log Out, and a search feature to find items by keyword.
 
-### Product Categories
+### Product Categories 
+`http://localhost:8000/product_cat/`
 Displays a listing of product categories with a total number of products in that category to the right of the category name.  Additionally, you will see the last three products added to the category.
 
 ### Sell Product
+`http://localhost:8000/product_sell/`
 Displays a form allowing a user to add product to sell on Bangazon.  This link will only be visible to authenticated users.  The person filling out the form will be able to enter a title, description, price, quantity, and a product type.
 
 ### My Account
+`http://localhost:8000/my_account/`
 Displays the customer information related to the logged in user.  There the user will see address, phone number, a button for payment methods, and a link to order history.
 
     Payment Methods:
@@ -165,6 +177,7 @@ Displays the customer information related to the logged in user.  There the user
         Displays a list of the user's order history with links to the order details.  The order details will include information about each line item incuding price.  The order total will also be displayed.
 
 ### Search
+example of a search for 'mustang': `http://localhost:8000/search_results/?q=mustang`
 Functionality that enables the user to search Bangazon using keywords.  Once a user enters a search term in the search box they will be redirected to a list of results when they either click search or 'enter'
 
 
@@ -172,11 +185,10 @@ Functionality that enables the user to search Bangazon using keywords.  Once a u
 This repo created by the Talkative Tangs of Cohort 28:
 
 
-[Lesley Boyd](https://github.com/laboyd001): Computers Module
+[Lesley Boyd](https://github.com/laboyd001) - Team Lead
 
-[Bryan Nilsen](https://github.com/BryanNilsen): Training Programs Module - Team Lead
+[Bryan Nilsen](https://github.com/BryanNilsen)
 
+[Ousama Elayan](https://github.com/ousamasama/)
 
-[Ousama Elayan](https://github.com/ousamasama/): Departments Module
-
-[Elyse Dawson](https://github.com/CurtainUp): Employees Module
+[Elyse Dawson](https://github.com/CurtainUp)
