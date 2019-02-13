@@ -42,7 +42,7 @@ class Product(models.Model):
     )
     title = models.CharField(max_length=100, blank=False)
     description = models.TextField(blank=False, null=True)
-    price = models.DecimalField(max_digits=7, decimal_places=2, blank=False, validators=[MinValueValidator(Decimal('0.01')), MaxValueValidator(Decimal('10000.00'))])
+    price = models.DecimalField(max_digits=7, decimal_places=2, blank=False)
     quantity = models.IntegerField(blank=False)
     productType = models.ForeignKey(
     ProductType,

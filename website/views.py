@@ -148,7 +148,7 @@ def product_sell(request):
                 #
                 return HttpResponseRedirect(reverse('website:product_detail', args=(product_id,)))
         else:
-            raise ValidationError(('Invalid value: %s'))
+            raise forms.ValidationError('Cannot enter value below 0 or over 10,000')
 
 
 # def product_cat(request):
