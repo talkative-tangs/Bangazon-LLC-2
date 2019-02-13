@@ -4,7 +4,7 @@ This web application is the source code for the Bangazon e-commerce web site. It
 
 ## Link to ERD
 
-![Bangazon-ERD](Website/images/Bangazon-ERD.png "Bangazon-ERD")
+![Bangazon-ERD](website/images/bangazon2_ERD.png "Bangazon-ERD")
 
 ## Helpful Resources
 
@@ -159,9 +159,9 @@ Displays a form allowing a user to add product to sell on Bangazon.  This link w
 ### My Account
 Displays the customer information related to the logged in user.  There the user will see address, phone number, a button for payment methods, and a link to order history.
 
-    * Payment Methods:
+    Payment Methods:
         Displays a list of all available payment methods for the user.  The user will also have the ability to delete payment methods from this screen.
-    * Order History:
+    Order History:
         Displays a list of the user's order history with links to the order details.  The order details will include information about each line item incuding price.  The order total will also be displayed.
 
 ### Search
