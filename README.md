@@ -4,7 +4,7 @@ This web application is the source code for the Bangazon e-commerce web site. It
 
 ## Link to ERD
 
-![Bangazon-ERD](website/images/bangazon2_ERD.png "Bangazon-ERD")
+![Bangazon-ERD](website/images/bangazon2_ERD.PNG "Bangazon_ERD")
 
 ## Helpful Resources
 
@@ -22,7 +22,8 @@ Django has many built-in [helper tags and filters](https://docs.djangoproject.co
 
 This projects utilizes ModelForm
 
-```class ModelForm
+```
+class ModelForm
 ```
 If you’re building a database-driven app, chances are you’ll have forms that map closely to Django models. For instance, you might have a BlogComment model, and you want to create a form that lets people submit comments. In this case, it would be redundant to define the field types in your form, because you’ve already defined the fields in your model.
 
@@ -140,7 +141,7 @@ As of now, the database is going to be hosted on your local computer. There are 
 
 4. Add initial data
 `python manage.py loaddata db.json`
->This will create load data from the projects json file to your local database
+>This will load data from the project's json file to your local database
 
 ## Run Server
 
