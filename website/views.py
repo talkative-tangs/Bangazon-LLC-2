@@ -284,11 +284,12 @@ def product_detail(request, product_id):
 
 def my_account(request, user_id):
     '''user account page'''
-
+    currentuser = request.user
     template_name = 'my_account/my_account.html'
     user = User.objects.get(id=user_id)
     context = {
-        'user': user,
+        # 'user': user,
+        'currentuser': currentuser.customer.id,
     }
 
     return render(request, template_name, context)
@@ -409,7 +410,7 @@ def my_account_order_detail(request, order_id):
 @login_required
 def my_account_payment_delete(request, payment_type_id):
     '''delete payment method from payment method list'''
-
+    currentuser = request.user
     if request.method == 'POST':
         with connection.cursor() as cursor:
             selected_payment = payment_type_id
@@ -419,7 +420,7 @@ def my_account_payment_delete(request, payment_type_id):
             sql = '''SELECT id, buyer_id FROM website_paymenttype WHERE id = %s'''
             user = PaymentType.objects.raw(sql, [payment_type_id])[0]
 
-        return HttpResponseRedirect(reverse('website:my_account_payment', args=(user.buyer_id,)))
+        return HttpResponseRedirect(reverse('website:my_account_payment', args=(currentuser.customer.id,)))
 
 
 # ===================================================
