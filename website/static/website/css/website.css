@@ -51,3 +51,23 @@ div {
   font-size: 1em;
   margin: 2px 5px 0px 10px;
 }
+
+.search_bar {
+  background-color: rgba(22, 22, 22, 0.8);
+  margin: 0px;
+  padding:5px;
+  text-align: right;
+}
+
+table {
+  margin: 5px;
+  padding: 5px;
+}
+
+td {
+  padding: 3px 5px;
+}
+
+button {
+  margin: 5px;
+}

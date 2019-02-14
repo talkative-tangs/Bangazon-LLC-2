@@ -9,7 +9,7 @@
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
         <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap-theme.min.css">
         <link rel="stylesheet" href="{% static 'website/css/website.css' %}">
-        <!-- <title>Bangazon LLC Admin Suite</title> -->
+        <title>Bangazon</title>
     </head>
 
     <body>
@@ -24,7 +24,7 @@
             <a href="{% url 'website:shopping_cart' %}">Shopping Cart</a>
             <a href="{% url 'website:logout' %}">Log Out</a>
         </nav>
-        <form method="get" action="/search_results/" class="search">
+        <form method="get" action="/search_results/" class="search search_bar">
           <input type="text" id="searchBox" class="search" name="q" placeholder="Search for a Product" required>
           <input type="submit" class="search" value="Search" >
       </form>
